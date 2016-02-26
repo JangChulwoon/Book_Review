@@ -4,24 +4,24 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 
 import bean.User;
-import dao.DB_set;
 import dao.UserDao;
+import db.DB_inp;
 
 /**
  * Servlet implementation class IndexController
  */
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static Logger logger = Logger.getLogger(IndexController.class);
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -44,8 +44,6 @@ public class IndexController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=utf-8");
-		request.setCharacterEncoding("utf-8");
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		UserDao userdao = new UserDao();
@@ -56,7 +54,6 @@ public class IndexController extends HttpServlet {
 				out.println("alert('what ? nope!');");
 				out.println("history.back();");
 				out.println("</script>");
-			
 		}else if(action.equals("join")){
 			// 아이디 중복체크는 나중에
 			String id = request.getParameter("joinid");
@@ -64,18 +61,15 @@ public class IndexController extends HttpServlet {
 			String name = request.getParameter("joinname");
 			System.out.println(name);
 			User user = new User(id,pass,name);
-			DB_set dbset = new DB_set();
-			Connection conn = dbset.dbinit(); // 디비  커넥션 연결 
-			userdao.insertDB(conn,user);
+			userdao.user_insert(user);
 			session.setAttribute("logincheck", "login");
 			session.setAttribute("name",name);
 			session.setAttribute("id",id);
-			dbset.disconn(conn); 
 			response.sendRedirect("/NotFound/main.do");
 		}else if(action.equals("login")){
 			System.out.println("로긴");
 			//여기서 디비 가져와서 검사를 해야댐 ...  
-			DB_set dbset = new DB_set();
+			DB_inp dbset = new DB_inp();
 			Connection conn = dbset.dbinit();
 			String id = request.getParameter("userid");
 			User user = new User();

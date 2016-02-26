@@ -1,0 +1,27 @@
+package test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.sql.Connection;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+
+import bean.User;
+import dao.UserDao;
+import db.DB_set;
+
+public class DBTest {
+	static Logger logger = Logger.getLogger(DBTest.class);
+
+	@Test
+	public void insertTest() {
+		UserDao dao = new UserDao();
+		DB_set set = new DB_set();
+		Connection conn = set.dbinit();
+		User user = new User("lus", "pass", "name");
+		dao.user_insert(user);
+		assertThat(user.getUseremail(), is("lus"));
+	}
+}

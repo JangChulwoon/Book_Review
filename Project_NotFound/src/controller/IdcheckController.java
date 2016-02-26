@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.DB_set;
 import dao.UserDao;
+import db.DB_inp;
 
 /**
  * Servlet implementation class JoinController
@@ -54,7 +54,7 @@ public class IdcheckController extends HttpServlet {
 			// 여기서 디비를 가져와서 실행
 			System.out.println(id);
 			UserDao userdao = new UserDao();
-			DB_set dbset = new DB_set();
+			DB_inp dbset = new DB_inp();
 			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			if (userdao.idcheck(conn, id)) {
 				request.setAttribute("check", 1);

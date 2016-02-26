@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,9 +16,10 @@ import api_daum.SearchApi;
  */
 @WebServlet("/Daum_SearchController")
 public class Daum_SearchController extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 
-    /**
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public Daum_SearchController() {

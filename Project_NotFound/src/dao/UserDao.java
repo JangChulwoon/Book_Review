@@ -1,73 +1,147 @@
 package dao;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
-import bean.Board;
+import org.apache.log4j.Logger;
+
 import bean.User;
+import db.DB_Template;
+import db.DB_inp;
 
 public class UserDao {
+	private DB_inp dbset = null;
+	public UserDao() {
+		this.dbset = new DB_inp();
+	}
 
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
-
-
-	public void insertDB(Connection conn, User user) {
-		try {
-			String sql = "insert into user values(?,?,?);"; // sql 쿼리
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user.getUseremail());
-			pstmt.setString(2, user.getUserpd());
-			pstmt.setString(3, user.getUsername());
-			pstmt.executeUpdate(); // 쿼리를 실행한다.
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			System.out.println("user insert문 실행");
-		}
+	static Logger logger = Logger.getLogger(UserDao.class);
+	
+	
+	public void user_insert(User user){
+		insert("insert into user values(?,?,?);",user);
 	}
-
-	// 아이디를 받아서 체크후 있으면 null을 .. 없으면 User을 리턴해줄생각 ...
-	public User loginDB(Connection conn, String id) {
-		User user = new User();
-		try {
-			String sql = "select * from user where email =?;"; // sql 쿼리
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery(); // 쿼리를 실행한다.
-			if (rs.next()) {
-				user.setUseremail(rs.getString("email"));
-				user.setUserpd(rs.getString("pass"));
-				user.setUsername(rs.getString("name"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			System.out.println("loginDB 실행");
-		}
-		if (user.getUseremail() == null) {
-			user.setUseremail("");
-		}
-		return user;
+	
+	public void user_deleteAll(){
+		delete("delete from user;");
 	}
-	public boolean idcheck(Connection conn,String id){
-		try {
-			String sql = "select email from user where email =?;"; // sql 쿼리
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery(); // 쿼리를 실행한다.
+	
+	public boolean user_login(String email){
+		StringBuilder strbuild = new StringBuilder("select * from user where email =");
+		strbuild.append(email);
+		return login(dbset.dbinit(), strbuild.toString());
+	}
+	
+	private boolean login(Connection conn,final String query){
+		DB_Template db_tmp = new DB_Template() {
 			
-			if (rs.next()) {
-				return false;
+			@Override
+			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
+				// TODO Auto-generated method stub
+				return null;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		};
+		
+		return false;
+	}
+	
+	// 아이디를 받아서 체크후 있으면 null을 .. 없으면 User을 리턴해줄생각 ...
+		public User loginDB(Connection conn, String email) {
+			User user = new User();
+			try {
+				String sql = "select * from user where email =?;"; // sql 쿼리
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, email);
+				rs = pstmt.executeQuery(); // 쿼리를 실행한다.
+				if (rs.next()) {
+					user.setUseremail(rs.getString("email"));
+					user.setUserpd(rs.getString("pass"));
+					user.setUsername(rs.getString("name"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+				logger.info("login" + new Timestamp(System.currentTimeMillis()));
+			}
+			if (user.getUseremail() == null) {
+				user.setUseremail("");
+			}
+			return user;
 		}
-		return true;
+
+		public boolean idcheck(Connection conn, String id) {
+			try {
+				String sql = "select email from user where email =?;"; // sql 쿼리
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, id);
+				rs = pstmt.executeQuery(); // 쿼리를 실행한다.
+
+				if (rs.next()) {
+					return false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (rs != null) {
+						rs.close();
+					}
+					if (pstmt != null) {
+						pstmt.close();
+					}
+					if (conn != null) {
+						conn.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			return true;
+		}
+	
+	private void insert(final String query,final User user){
+		DB_Template db_tmp = new DB_Template() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException{
+				pstmt = conn.prepareStatement(query);
+				pstmt.setString(1, user.getUseremail());
+				pstmt.setString(2, user.getUserpd());
+				pstmt.setString(3, user.getUsername());
+				return pstmt;
+			}
+			
+		};
+		dbset.Template_Update(dbset.dbinit(),db_tmp);
+	}
+	
+	private void delete(final String query){
+		DB_Template db_tmp = new DB_Template() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException{
+				pstmt = conn.prepareStatement(query);
+				return pstmt;
+			}
+			
+		};
+		dbset.Template_Update(dbset.dbinit(),db_tmp);
 	}
 
 	
+
 }

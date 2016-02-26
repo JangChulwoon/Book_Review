@@ -1,0 +1,17 @@
+package test;
+
+import static org.junit.Assert.assertThat;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.*;
+
+public class DBTest {
+	static Logger logger = Logger.getLogger(DBTest.class);
+
+	@Test
+	public void insertTest() {
+		
+		assertThat(5, is(5));
+	}
+}
