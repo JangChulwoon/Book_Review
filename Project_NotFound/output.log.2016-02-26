@@ -1,0 +1,7 @@
+2016-02-26 20:04:58,175 INFO  [main] test.DBTest       (  DBTest.java:10)     - µÅ?
+2016-02-26 20:12:01,272 INFO  [main] dao.UserDao       ( UserDao.java:40)     - insert2016-02-26 20:12:01.272
+2016-02-26 20:27:37,188 INFO  [main] dao.UserDao       ( UserDao.java:44)     - 2016-02-26 20:27:37.187 :: com.mysql.jdbc.JDBC4PreparedStatement@1b0375b3: EXCEPTION: java.sql.SQLException: No operations allowed after statement closed.
+2016-02-26 20:28:12,864 INFO  [main] dao.UserDao       ( UserDao.java:44)     - 2016-02-26 20:28:12.863 :: com.mysql.jdbc.JDBC4PreparedStatement@1b0375b3: EXCEPTION: java.sql.SQLException: No operations allowed after statement closed.
+2016-02-26 20:28:51,513 INFO  [main] dao.UserDao       ( UserDao.java:44)     - 2016-02-26 20:28:51.512 :: com.mysql.jdbc.JDBC4PreparedStatement@1b0375b3: EXCEPTION: java.sql.SQLException: No operations allowed after statement closed.
+2016-02-26 23:47:57,971 INFO  [main] db.DB_inp         (  DB_inp.java:47)     - 2016-02-26 23:47:57.97 :: com.mysql.jdbc.JDBC4PreparedStatement@5a39699c: delete from user;
+2016-02-26 23:47:58,324 INFO  [main] db.DB_inp         (  DB_inp.java:47)     - 2016-02-26 23:47:58.324 :: com.mysql.jdbc.JDBC4PreparedStatement@49e4cb85: insert into user values('lus','pass','name');

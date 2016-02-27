@@ -4,19 +4,19 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 
 public class DB_inp {
 	static Logger logger = Logger.getLogger(DB_inp.class);
 	private Connection conn = null;
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
 
 	public DB_inp() {
 		// default constructor
@@ -38,7 +38,8 @@ public class DB_inp {
 		return conn;
 	}
 
-	public void Template_Update(Connection conn, DB_Template temp) {
+	public void Template_Update(Connection conn, DB_TemUpdate temp) {
+		PreparedStatement pstmt = null;
 		try {
 			pstmt = temp.QueryTemplate(conn);
 			pstmt.executeUpdate(); // 쿼리를 실행한다.
@@ -48,9 +49,7 @@ public class DB_inp {
 		} finally {
 			logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + pstmt);
 			try {
-				if (rs != null) {
-					rs.close();
-				}
+
 				if (pstmt != null) {
 					pstmt.close();
 				}
@@ -62,25 +61,29 @@ public class DB_inp {
 			}
 		}
 	}
-	
-	public <T> List<T> Template_Query(Connection conn, DB_Template temp, T object) {
-		List<T> list = null;
+
+	public List<Map<String, String>> Template_Query(Connection conn, DB_TemQuery temp) {
+		List<Map<String, String>> list = null;
+		Map<String, String> map = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
 		try {
-			list = new ArrayList<T>();
-			pstmt = temp.QueryTemplate(conn);
-			rs = pstmt.executeQuery(); 
-			while(rs.next()){
-				 // 정보를 어떻게 넣을래 ?
-				// 난 게시글 / 댓글 / 회원 정보 모두 이 메소드에서 가져오고싶은데 ?
-				rs.getString(1);
-				// 1. 2 중배열로 만들어서 가져온다 ? 
-				// 2. map 과 list 를 함께 사용해서 가져온다 
-				// 3. 이부분은 더 생각해볼것 ..
+			list = new ArrayList<Map<String, String>>();
+			rs = temp.QueryTemplate(conn);
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int numberOfColumns = rsmd.getColumnCount();
+			// 무슨 형태
+			while (rs.next()) {
+				map = new HashMap<String, String>();
+				for (int i = 1; i <= numberOfColumns; i++) {
+					map.put(rsmd.getColumnName(i), rs.getString(i));
+				}
+				list.add(map);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + pstmt);
 			try {
 				if (rs != null) {
 					rs.close();

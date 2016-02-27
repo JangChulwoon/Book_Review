@@ -46,28 +46,16 @@ public class IdcheckController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=utf-8");
-		request.setCharacterEncoding("utf-8");
 		String id = request.getParameter("id");
-		PrintWriter out = response.getWriter();
 		if (!(id.length() == 0 && id == null)) {
-			// 여기서 디비를 가져와서 실행
-			System.out.println(id);
 			UserDao userdao = new UserDao();
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
-			if (userdao.idcheck(conn, id)) {
+			if (userdao.user_check(id)) {
 				request.setAttribute("check", 1);
 			} else {
 				request.setAttribute("check", 2);
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("/view/check/Join_idcheck.jsp");
 			rd.forward(request, response);
-		} else {
-			out.println("<script>");
-			out.println("alert('what ? nope!');");
-			out.println("window.close();");
-			out.println("</script>");
 		}
 	}
 

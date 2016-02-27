@@ -38,7 +38,6 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 	}
 
@@ -61,7 +60,6 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 		return list;
 	}
@@ -86,13 +84,12 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 	}
 
 	// 글의 수를 가져옴
 	public int getBoardCount(Connection conn) {
-		int size=0;
+		int size = 0;
 		try {
 			String sql = "SELECT count(*) as size FROM board;";
 			pstmt = conn.prepareStatement(sql);
@@ -103,15 +100,15 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 		return size;
 	}
+
 	// 검색시에 글 갯수를 가져옴
-	public int getBoardCount_search(Connection conn,String keyword, String key) {
-		int size=0;
+	public int getBoardCount_search(Connection conn, String keyword, String key) {
+		int size = 0;
 		try {
-			String sql = "SELECT  count(*) as size FROM board where " + keyword+ " like '%" + key + "%';";
+			String sql = "SELECT  count(*) as size FROM board where " + keyword + " like '%" + key + "%';";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			rs.next();
@@ -120,15 +117,14 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 		return size;
 	}
-	
+
 	// 게시글을 list 형태로 담아서 뿌려줌
-	public List<Board> boarder_selectDB(Connection conn,int start, int last) {
+	public List<Board> boarder_selectDB(Connection conn, int start, int last) {
 		try {
-		
+
 			String sql = "SELECT num,subject,bookname,writer FROM board order by num desc limit ?,?;";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, start);
@@ -148,7 +144,6 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 		return list;
 	}
@@ -175,13 +170,12 @@ public class BoarderDao {
 				board.setPublisher(rs.getString("publisher"));
 				board.setPublication_date(rs.getString("publication_date"));
 				board.setBook_img(rs.getString("book_img"));
-				board.setDescription(rs.getString("descriptions")); 
+				board.setDescription(rs.getString("descriptions"));
 				list.add(board);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 		return list;
 	}
@@ -204,9 +198,10 @@ public class BoarderDao {
 			System.out.println("board delete문 실행");
 		}
 	}
-	public void boarder_updatDB(Connection conn, Board board,String num) {
+
+	public void boarder_updatDB(Connection conn, Board board, String num) {
 		try {
-			
+
 			String sql = " update board set subject= ?, writer= ?, contents=?, reg_date=?, bookname=?, author=?, publisher=?, publication_date=?, book_img=?, description=? where num = ? ;";
 			// auto는 비워놓고 넣음
 			pstmt = conn.prepareStatement(sql);
@@ -225,11 +220,10 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("board insert문 실행");
 		}
 	}
 
-	public List<Board> boarder_SearchDB(Connection conn, String keyword, String key,int start, int last) {
+	public List<Board> boarder_SearchDB(Connection conn, String keyword, String key, int start, int last) {
 		try {
 			String sql = "SELECT *,convert(description using utf8) as descriptions FROM board where " + keyword
 					+ " like '%" + key + "%' order by num desc limit ?,?;";
@@ -259,7 +253,6 @@ public class BoarderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println(pstmt);
 		}
 		return list;
 	}

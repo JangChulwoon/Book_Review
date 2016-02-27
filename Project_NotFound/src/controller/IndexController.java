@@ -2,7 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import bean.User;
 import dao.UserDao;
-import db.DB_inp;
 
 /**
  * Servlet implementation class IndexController
@@ -22,88 +22,73 @@ import db.DB_inp;
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Logger logger = Logger.getLogger(IndexController.class);
-	
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public IndexController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public IndexController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doPost(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		List<Map<String, String>> list = null;
 		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		UserDao userdao = new UserDao();
-		PrintWriter out = response.getWriter(); 
-		if(action==null||action.length()==0){
-			//여기서 뒤로 가는게 아니라 에러페이지를 따로 만들어서 그쪽으로 보내자 ..
-				out.println("<script>");
-				out.println("alert('what ? nope!');");
-				out.println("history.back();");
-				out.println("</script>");
-		}else if(action.equals("join")){
-			// 아이디 중복체크는 나중에
-			String id = request.getParameter("joinid");
-			String pass = request.getParameter("joinpass");
-			String name = request.getParameter("joinname");
-			System.out.println(name);
-			User user = new User(id,pass,name);
+		if (action == null || action.length() == 0) {
+			// 여기서 뒤로 가는게 아니라 에러페이지를 따로 만들어서 그쪽으로 보내자 ..
+			userdao.jsback(response);
+		} else if (action.equals("join")) {
+			User user = new User(request.getParameter("joinid"), request.getParameter("joinpass"),
+					request.getParameter("joinname"));
 			userdao.user_insert(user);
-			session.setAttribute("logincheck", "login");
-			session.setAttribute("name",name);
-			session.setAttribute("id",id);
+			input_Session(request, request.getParameter("joinid"), request.getParameter("joinname"));
 			response.sendRedirect("/NotFound/main.do");
-		}else if(action.equals("login")){
-			System.out.println("로긴");
-			//여기서 디비 가져와서 검사를 해야댐 ...  
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit();
-			String id = request.getParameter("userid");
-			User user = new User();
-			user = userdao.loginDB(conn, id);
-			String name =user.getUsername();
-			String db_id = user.getUseremail();
-			if(!(db_id.equals(""))&&(request.getParameter("userpd").equals(user.getUserpd()))){
-				session.setAttribute("logincheck", "login");
-				session.setAttribute("name",name);
-				System.out.println(name);
-				session.setAttribute("id",user.getUseremail());		
+		} else if (action.equals("login")) {
+			// 여기서 디비 가져와서 검사를 해야댐 ...
+			String email = request.getParameter("userid");
+			String pass = request.getParameter("userpd");
+			list = userdao.user_login(email);
+			if (list.size() != 0 && list.get(0).get("pass").equals(pass)) {
+				input_Session(request, email, list.get(0).get("name"));
+				logger.info("login info" + list.get(0));
 				response.sendRedirect("/NotFound/main.do");
-			
-			}else{
-				out.println("<script>");
-				out.println("alert('nope!');");
-				out.println("history.back();");
-				out.println("</script>");
+			} else {
+				userdao.jsback(response);
 			}
-		}else if(action.equals("facebook")){
-			session.setAttribute("logincheck", "facebook");
-			session.setAttribute("id",request.getParameter("email"));
-			session.setAttribute("name",request.getParameter("name"));
+		} else if (action.equals("facebook")) {
+			input_Session(request, request.getParameter("email"), request.getParameter("name"));
 			response.sendRedirect("/NotFound/main.do");
-			
-		}else if("logout".equals(action)){
+		} else if ("logout".equals(action)) {
 			session.invalidate();
 			response.sendRedirect("/NotFound/view/index.jsp");
-		}else{
-			out.println("<script>");
-			out.println("alert('what ? nope!');");
-			out.println("history.back();");
-			out.println("</script>");
+		} else {
+			userdao.jsback(response);
 		}
+	}
+
+	private void input_Session(HttpServletRequest request, String email, String name) {
+		HttpSession session = request.getSession();
+		session.setAttribute("logincheck", "login");
+		session.setAttribute("id", email);
+		session.setAttribute("name", name);
 	}
 
 }

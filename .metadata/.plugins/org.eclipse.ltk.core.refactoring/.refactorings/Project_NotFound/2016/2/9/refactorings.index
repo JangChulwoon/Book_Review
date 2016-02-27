@@ -3,3 +3,6 @@
 1456484188478	Delete element
 1456485387351	Rename type 'Template'
 1456486321884	Rename type 'DB_set'
+1456538500145	Rename type 'DB_Template'
+1456540167928	Delete element
+1456544325220	Infer generic type arguments

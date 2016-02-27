@@ -1,19 +1,27 @@
 package dao;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
 import bean.User;
-import db.DB_Template;
+import db.DB_TemQuery;
+import db.DB_TemUpdate;
 import db.DB_inp;
 
 public class UserDao {
 	private DB_inp dbset = null;
+
 	public UserDao() {
 		this.dbset = new DB_inp();
 	}
@@ -21,127 +29,89 @@ public class UserDao {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 	static Logger logger = Logger.getLogger(UserDao.class);
-	
-	
-	public void user_insert(User user){
-		insert("insert into user values(?,?,?);",user);
+
+	public void user_insert(User user) {
+		insert("insert into user values(?,?,?);", user);
 	}
-	
-	public void user_deleteAll(){
+
+	public void user_deleteAll() {
 		delete("delete from user;");
 	}
-	
-	public boolean user_login(String email){
+
+	public List<Map<String, String>> user_login(String email) {
 		StringBuilder strbuild = new StringBuilder("select * from user where email =");
-		strbuild.append(email);
-		return login(dbset.dbinit(), strbuild.toString());
+		strbuild.append("'").append(email).append("'");
+		return login(strbuild.toString());
 	}
+
+	public boolean user_check(String email) {
+		StringBuilder strbuild = new StringBuilder("select * from user where email =");
+		strbuild.append("'").append(email).append("'");
+		return idcheck(strbuild.toString());
+	}
+
 	
-	private boolean login(Connection conn,final String query){
-		DB_Template db_tmp = new DB_Template() {
-			
+	
+	private boolean idcheck(final String query) {
+		DB_TemQuery db_tmp = new DB_TemQuery() {
 			@Override
-			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
-				// TODO Auto-generated method stub
-				return null;
+			public ResultSet QueryTemplate(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(query);
+				logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + query);
+				ResultSet rs = pstmt.executeQuery();
+				return rs;
 			}
 		};
-		
-		return false;
+		return dbset.Template_Query(dbset.dbinit(), db_tmp).size() == 0 ? true : false;
 	}
-	
-	// 아이디를 받아서 체크후 있으면 null을 .. 없으면 User을 리턴해줄생각 ...
-		public User loginDB(Connection conn, String email) {
-			User user = new User();
-			try {
-				String sql = "select * from user where email =?;"; // sql 쿼리
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, email);
-				rs = pstmt.executeQuery(); // 쿼리를 실행한다.
-				if (rs.next()) {
-					user.setUseremail(rs.getString("email"));
-					user.setUserpd(rs.getString("pass"));
-					user.setUsername(rs.getString("name"));
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (pstmt != null) {
-						pstmt.close();
-					}
-					if (conn != null) {
-						conn.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
 
-				logger.info("login" + new Timestamp(System.currentTimeMillis()));
-			}
-			if (user.getUseremail() == null) {
-				user.setUseremail("");
-			}
-			return user;
-		}
-
-		public boolean idcheck(Connection conn, String id) {
-			try {
-				String sql = "select email from user where email =?;"; // sql 쿼리
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, id);
-				rs = pstmt.executeQuery(); // 쿼리를 실행한다.
-
-				if (rs.next()) {
-					return false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (rs != null) {
-						rs.close();
-					}
-					if (pstmt != null) {
-						pstmt.close();
-					}
-					if (conn != null) {
-						conn.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			return true;
-		}
-	
-	private void insert(final String query,final User user){
-		DB_Template db_tmp = new DB_Template() {
+	private void insert(final String query, final User user) {
+		DB_TemUpdate db_tmp = new DB_TemUpdate() {
 			@Override
-			public PreparedStatement QueryTemplate(Connection conn) throws SQLException{
-				pstmt = conn.prepareStatement(query);
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException {
+				PreparedStatement pstmt = conn.prepareStatement(query);
 				pstmt.setString(1, user.getUseremail());
 				pstmt.setString(2, user.getUserpd());
 				pstmt.setString(3, user.getUsername());
 				return pstmt;
 			}
-			
 		};
-		dbset.Template_Update(dbset.dbinit(),db_tmp);
-	}
-	
-	private void delete(final String query){
-		DB_Template db_tmp = new DB_Template() {
-			@Override
-			public PreparedStatement QueryTemplate(Connection conn) throws SQLException{
-				pstmt = conn.prepareStatement(query);
-				return pstmt;
-			}
-			
-		};
-		dbset.Template_Update(dbset.dbinit(),db_tmp);
+		dbset.Template_Update(dbset.dbinit(), db_tmp);
 	}
 
-	
+	private void delete(final String query) {
+		DB_TemUpdate db_tmp = new DB_TemUpdate() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException {
+				PreparedStatement pstmt = conn.prepareStatement(query);
+				return pstmt;
+			}
+
+		};
+		dbset.Template_Update(dbset.dbinit(), db_tmp);
+	}
+
+	private List<Map<String, String>> login(final String query) {
+		DB_TemQuery db_tmp = new DB_TemQuery() {
+			@Override
+			public ResultSet QueryTemplate(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(query);
+				logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + query);
+				ResultSet rs = pstmt.executeQuery();
+				return rs;
+			}
+		};
+		return dbset.Template_Query(dbset.dbinit(), db_tmp);
+	}
+
+	//  method dosen't suitable for this class
+	public void jsback(HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();
+		out.println("<script>");
+		out.println("alert('what ? nope!');");
+		out.println("history.back();");
+		out.println("</script>");
+
+	}
 
 }

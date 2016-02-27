@@ -1,0 +1,102 @@
+package controller;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+
+import bean.User;
+import dao.UserDao;
+
+/**
+ * Servlet implementation class IndexController
+ */
+public class IndexController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	static Logger logger = Logger.getLogger(IndexController.class);
+	
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public IndexController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		List<Map<String,String>> list = null;
+		HttpSession session = request.getSession();
+		String action = request.getParameter("action");
+		UserDao userdao = new UserDao();
+		if(action==null||action.length()==0){
+			//여기서 뒤로 가는게 아니라 에러페이지를 따로 만들어서 그쪽으로 보내자 ..
+			jsback(response);
+		}else if(action.equals("join")){
+			// 아이디 중복체크는 나중에
+			String id = request.getParameter("joinid");
+			String pass = request.getParameter("joinpass");
+			String name = request.getParameter("joinname");
+			User user = new User(id,pass,name);
+			userdao.user_insert(user);
+			session.setAttribute("logincheck", "login");
+			session.setAttribute("name",name);
+			session.setAttribute("id",id);
+			response.sendRedirect("/NotFound/main.do");
+		}else if(action.equals("login")){
+			//여기서 디비 가져와서 검사를 해야댐 ...  
+			String email = request.getParameter("userid");
+			String pass = request.getParameter("userpd");
+			list = null;
+			list = userdao.user_login(email);
+			if(list.size()!=0 &&list.get(0).get("pass").equals(pass)){
+				logger.info("login info"+list.get(0));
+				session.setAttribute("logincheck", "login");
+				session.setAttribute("name",list.get(0).get("name"));
+				session.setAttribute("id",email);		
+				response.sendRedirect("/NotFound/main.do");
+			}else{
+				jsback(response);
+			}
+		}else if(action.equals("facebook")){
+			session.setAttribute("logincheck", "facebook");
+			session.setAttribute("id",request.getParameter("email"));
+			session.setAttribute("name",request.getParameter("name"));
+			response.sendRedirect("/NotFound/main.do");
+			
+		}else if("logout".equals(action)){
+			session.invalidate();
+			response.sendRedirect("/NotFound/view/index.jsp");
+		}else{
+			jsback(response);
+		}
+	}
+	
+	private void jsback(HttpServletResponse response) throws IOException{
+		PrintWriter out = response.getWriter(); 
+		out.println("<script>");
+		out.println("alert('what ? nope!');");
+		out.println("history.back();");
+		out.println("</script>");
+		
+	}
+}
