@@ -115,3 +115,8 @@
 0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:44:23 +0900] "GET /NotFound/main.do HTTP/1.1" 200 5411
 0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:44:23 +0900] "GET /NotFound/fonts/glyphicons-halflings-regular.woff HTTP/1.1" 404 1090
 0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:44:23 +0900] "GET /NotFound/fonts/glyphicons-halflings-regular.ttf HTTP/1.1" 404 1088
+0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:47:04 +0900] "GET /NotFound/index.do?action=logout HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:47:04 +0900] "GET /NotFound/view/index.jsp HTTP/1.1" 200 5329
+0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:47:04 +0900] "GET /NotFound/css/font-awesome.css HTTP/1.1" 404 1052
+0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:47:12 +0900] "GET /NotFound/view/index.jsp HTTP/1.1" 200 5329
+0:0:0:0:0:0:0:1 - - [27/Feb/2016:19:47:12 +0900] "GET /NotFound/css/font-awesome.css HTTP/1.1" 404 1052

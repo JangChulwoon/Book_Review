@@ -25,9 +25,6 @@ public class UserDao {
 	public UserDao() {
 		this.dbset = new DB_inp();
 	}
-
-	private PreparedStatement pstmt = null;
-	private ResultSet rs = null;
 	static Logger logger = Logger.getLogger(UserDao.class);
 
 	public void user_insert(User user) {
@@ -104,7 +101,7 @@ public class UserDao {
 		return dbset.Template_Query(dbset.dbinit(), db_tmp);
 	}
 
-	//  method dosen't suitable for this class
+	//  method dosen't suitable for this class ...
 	public void jsback(HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
 		out.println("<script>");

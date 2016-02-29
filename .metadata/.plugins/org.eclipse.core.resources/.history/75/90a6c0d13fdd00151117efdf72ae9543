@@ -1,0 +1,10 @@
+package container;
+
+public class IndexContainer {
+
+	public IndexContainer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+}

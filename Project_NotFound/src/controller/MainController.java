@@ -1,9 +1,9 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,7 +11,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
 
 import bean.Board;
 import bean.Reple;
@@ -24,6 +25,7 @@ import db.DB_inp;
 @WebServlet("/MainController")
 public class MainController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static Logger logger = Logger.getLogger(MainController.class);
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -50,33 +52,23 @@ public class MainController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("text/html; charset=utf-8");
-		request.setCharacterEncoding("utf-8");
+		DB_inp db =new DB_inp();
 		String action = request.getParameter("main_action");
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		BoarderDao boarderDao;
+		BoarderDao boarderDao = new BoarderDao();
 		// 이렇게 설계해도 되는건가 ...
 		if ("write".equals(action)) {
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			Board board = new Board(request.getParameter("subject"), request.getParameter("id"),
 					request.getParameter("contents").replaceAll("\r\n", "<br>"), request.getParameter("bookname"),
 					request.getParameter("author"), request.getParameter("publisher"),
 					request.getParameter("publication_date"), request.getParameter("book_img"),
 					request.getParameter("description"));
-			System.out.println(request.getParameter("contents"));
-			boarderDao = new BoarderDao();
-			boarderDao.boarder_insertDB(conn, board);
+			boarderDao.boarder_insert(board);
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("detail".equals(action)) {
 			// 여기서는 리플 정보와 게시판 정보 두개를 가져와서 뿌려주는 작업을 해줘야한다 ...
 			String num = request.getParameter("num");
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
-			boarderDao = new BoarderDao();
-			List list = boarderDao.boarder_detailDB(conn, num);
-			List replelist = boarderDao.Reple_listDB(conn, num);
+			List<Map<String,String>> list = boarderDao.boarder_detail(num);
+			List<Map<String,String>> replelist = boarderDao.reple_selectAll(num);
 			request.setAttribute("reple", replelist);
 			request.setAttribute("board", list);
 			RequestDispatcher rd = request.getRequestDispatcher("/view/result.jsp");
@@ -86,17 +78,11 @@ public class MainController extends HttpServlet {
 			String contents = request.getParameter("context").replaceAll("\r\n", "<br>");
 			String num = request.getParameter("num");
 			Reple reple = new Reple(Integer.parseInt(num), id, contents);
-			// 빈을 이용해서 정보를 기입할꺼야
-			// 그후 정보드를 dao를 통해 집어 넣을 예정 ...
-			boarderDao = new BoarderDao();
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
-			boarderDao.Reple_insertDB(conn, reple);
+			boarderDao.Reple_insert(reple);
 			// 완료 되면 당연히 result 로 ....?
 			RequestDispatcher rd = request.getRequestDispatcher("/main.do?main_action=detail");
 			rd.forward(request, response);
 		} else if ("board_update".equals(action)) {
-			boarderDao = new BoarderDao();
 			DB_inp dbset = new DB_inp();
 			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			Board board = new Board(request.getParameter("subject"), request.getParameter("id"),
@@ -106,13 +92,11 @@ public class MainController extends HttpServlet {
 			boarderDao.boarder_updatDB(conn, board, request.getParameter("num"));
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("board_delete".equals(action)) {
-			boarderDao = new BoarderDao();
 			DB_inp dbset = new DB_inp();
 			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			boarderDao.boarder_deletDB(conn, request.getParameter("num"));
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("search".equals(action)) {
-			boarderDao = new BoarderDao();
 			String keyword = request.getParameter("search_value");
 			String key = request.getParameter("search_key");
 			DB_inp dbset = new DB_inp();
@@ -136,7 +120,6 @@ public class MainController extends HttpServlet {
 			rd.forward(request, response);
 			// 이걸이제 보여주면 되나 ..?
 		} else {
-			boarderDao = new BoarderDao();
 			DB_inp dbset = new DB_inp();
 			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			String current_page = request.getParameter("current_page");

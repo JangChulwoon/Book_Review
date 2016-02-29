@@ -37,13 +37,11 @@ public class DB_inp {
 		}
 		return conn;
 	}
-
 	public void Template_Update(Connection conn, DB_TemUpdate temp) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = temp.QueryTemplate(conn);
 			pstmt.executeUpdate(); // 쿼리를 실행한다.
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -77,10 +75,10 @@ public class DB_inp {
 				map = new HashMap<String, String>();
 				for (int i = 1; i <= numberOfColumns; i++) {
 					map.put(rsmd.getColumnName(i), rs.getString(i));
+					logger.info(rs.getString(i));
 				}
 				list.add(map);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

@@ -26,9 +26,9 @@
 			<label for="exampleInputEmail1">Name : ${name}</label> <br> <label
 				for="exampleInputEmail1">ID : ${id}</label>
 			<button type="button" class="btn btn-default btn-sm"
-				aria-label="Left Align" onclick="location.href='index.do?action=logout';">
-				<span class="glyphicon glyphicon-remove" aria-hidden="true"
-					></span>
+				aria-label="Left Align"
+				onclick="location.href='index.do?action=logout';">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 			</button>
 
 			<hr>
@@ -49,33 +49,33 @@
 					<table class="table table-hover" style="max-width: 593;">
 						<tr>
 							<td width="100px">제목</td>
-							<td colspan="3">${board[0].getSubject()}</td>
+							<td colspan="3">${board[0].subject}</td>
 						</tr>
 						<tr>
 							<td width="100px">작성자</td>
-							<td>${board[0].getWriter()}</td>
+							<td>${board[0].writer}</td>
 							<td width="100px">출판일자</td>
-							<td>${board[0].getDate()}</td>
+							<td>${board[0].publication_date}</td>
 						</tr>
 						<tr>
 							<td>책이름</td>
-							<td colspan="3">${board[0].getBookname()}</td>
+							<td colspan="3">${board[0].bookname}</td>
 						</tr>
 						<tr>
 							<td>작가</td>
-							<td>${board[0].getAuthor()}</td>
+							<td>${board[0].author}</td>
 							<td>출판사</td>
-							<td>${board[0].getPublisher()}</td>
+							<td>${board[0].publisher}</td>
 						</tr>
 						<tr>
 							<td colspan="4" style="text-align: center;"><br> <img
-								src="${board[0].getBook_img()}" width="30%"> <br> <br>
-								<b>${board[0].getDescription()}</b> <br> <br>${board[0].getContents()}</td>
+								src="${board[0].book_img}" width="30%"> <br> <br>
+								<b>${board[0].descriptions}</b> <br> <br>${board[0].content}</td>
 
 						</tr>
 					</table>
 					<c:choose>
-						<c:when test="${board[0].getWriter() eq sessionScope.id}">
+						<c:when test="${board[0].writer eq sessionScope.id}">
 									`<input type="button" value="수정/삭제" class="btn btn-link"
 								onclick="layer_open('layer2');return false;">
 						</c:when>
@@ -91,11 +91,11 @@
 								<c:forEach var="i" begin="0" end="${fn:length(reple)-1}"
 									step="1">
 									<tr>
-										<td colspan="2">${reple[i].getId()}</td>
+										<td colspan="2">${reple[i].id}</td>
 									</tr>
 									<tr class="info">
-										<td>${reple[i].getDate()}</td>
-										<td style="max-width: 400px">${reple[i].getContext()}</td>
+										<td>${reple[i].date}</td>
+										<td style="max-width: 400px">${reple[i].contents}</td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>
@@ -106,7 +106,7 @@
 								<td style="vertical-align: middle;"><input type="hidden"
 									name="main_action" id="main_action" value="reply"> <label
 									for="exampleInputEmail1">댓글 </label> <input type="hidden"
-									name="num" id="num" value="${board[0].getNum()}"> <input
+									name="num" id="num" value="${board[0].num}"> <input
 									type="hidden" name="id" id="id"
 									value="<%=session.getAttribute("id")%>"></td>
 								<td>
@@ -122,12 +122,10 @@
 				</div>
 			</div>
 			<hr>
-
 		</div>
 		<!--/center-->
 	</div>
 	<!-- 여기까지 -->
-
 	<div class="layer">
 		<div class="bg"></div>
 		<div id="layer2" class="pop-layer">
@@ -138,43 +136,44 @@
 						<input type="hidden" name="main_action" value="board_update">
 						<input type="hidden" name="id"
 							value="<%=session.getAttribute("id")%>"> <input
-							type="hidden" name="num" id="num" value="${board[0].getNum()}">
+							type="hidden" name="num" id="num" value="${board[0].num}">
 						<input type="hidden" name="publisher" id="publisher"
-							value="${board[0].getPublisher()}"> <input type="hidden"
+							value="${board[0].publisher}"> <input type="hidden"
 							name="publication_date" id="publication_date"
-							value="${board[0].getDate()}"> <input type="hidden"
-							name="book_img" id="book_img" value="${board[0].getBook_img()}">
-						<input type="hidden" name="description" id="description"
-							value="${board[0].getDescription()}">
+							value="${board[0].publication_date}"> <input
+							type="hidden" name="book_img" id="book_img"
+							value="${board[0].book_img}"> <input type="hidden"
+							name="description" id="description"
+							value="${board[0].descriptions}">
 						<table width="100%" border="1" align="center" cellspacing="0"
 							cellpadding="3">
 							<tr>
 								<th scope="row" height="10%">제목</th>
 								<td><input name="subject" id="subject" type="text"
-									value="${board[0].getSubject()}"></td>
+									value="${board[0].subject}"></td>
 							</tr>
 							<tr>
 								<th scope="row" height="10%">책 제목</th>
-								<td><input type="text" value="${board[0].getBookname()}"
+								<td><input type="text" value="${board[0].bookname}"
 									name="bookname" id="bookname"> <input type="button"
 									value="검색" onclick="booksearch();" /></td>
 							</tr>
 							<tr>
 								<th scope="row">저자</th>
 								<td><input type="text" name="author" id="author"
-									value="${board[0].getAuthor()}"></input></td>
+									value="${board[0].author}"></input></td>
 							</tr>
 							<tr>
 								<th scope="row">글 내용</th>
 								<td><textarea name="contents" cols="45"
 										rows="10
-                            ">${board[0].getContents()}</textarea></td>
+                            ">${board[0].content}</textarea></td>
 							</tr>
 							<tr>
 								<th colspan="2" scope="row"><input type="button" value="등록"
 									onclick="writeCheck();"> <input type="button"
 									value="삭제"
-									onClick="location.href='main.do?main_action=board_delete&num=${board[0].getNum()}';">
+									onClick="location.href='main.do?main_action=board_delete&num=${board[0].getNum}';">
 									<input type="button" value="취소" onclick="fadelayer();"></th>
 							</tr>
 						</table>
