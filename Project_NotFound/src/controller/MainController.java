@@ -52,7 +52,6 @@ public class MainController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		DB_inp db =new DB_inp();
 		String action = request.getParameter("main_action");
 		BoarderDao boarderDao = new BoarderDao();
 		// 이렇게 설계해도 되는건가 ...
@@ -79,22 +78,18 @@ public class MainController extends HttpServlet {
 			String num = request.getParameter("num");
 			Reple reple = new Reple(Integer.parseInt(num), id, contents);
 			boarderDao.Reple_insert(reple);
-			// 완료 되면 당연히 result 로 ....?
 			RequestDispatcher rd = request.getRequestDispatcher("/main.do?main_action=detail");
 			rd.forward(request, response);
 		} else if ("board_update".equals(action)) {
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			Board board = new Board(request.getParameter("subject"), request.getParameter("id"),
 					request.getParameter("contents"), request.getParameter("bookname"), request.getParameter("author"),
 					request.getParameter("publisher"), request.getParameter("publication_date"),
 					request.getParameter("book_img"), request.getParameter("description"));
-			boarderDao.boarder_updatDB(conn, board, request.getParameter("num"));
+			boarderDao.Board_Update(board, request.getParameter("num"));
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("board_delete".equals(action)) {
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
-			boarderDao.boarder_deletDB(conn, request.getParameter("num"));
+			boarderDao.Board_Delete(request.getParameter("num"));
+			boarderDao.Reple_Delete(request.getParameter("num"));
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("search".equals(action)) {
 			String keyword = request.getParameter("search_value");

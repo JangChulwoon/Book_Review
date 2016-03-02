@@ -38,28 +38,13 @@ public class UserDao {
 	public List<Map<String, String>> user_login(String email) {
 		StringBuilder strbuild = new StringBuilder("select * from user where email =");
 		strbuild.append("'").append(email).append("'");
-		return login(strbuild.toString());
+		return dbset.getList(strbuild.toString());
 	}
 
 	public boolean user_check(String email) {
 		StringBuilder strbuild = new StringBuilder("select * from user where email =");
 		strbuild.append("'").append(email).append("'");
-		return idcheck(strbuild.toString());
-	}
-
-	
-	
-	private boolean idcheck(final String query) {
-		DB_TemQuery db_tmp = new DB_TemQuery() {
-			@Override
-			public ResultSet QueryTemplate(Connection con) throws SQLException {
-				PreparedStatement pstmt = con.prepareStatement(query);
-				logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + query);
-				ResultSet rs = pstmt.executeQuery();
-				return rs;
-			}
-		};
-		return dbset.Template_Query(dbset.dbinit(), db_tmp).size() == 0 ? true : false;
+		return dbset.getList(strbuild.toString()).size()==0?true:false;
 	}
 
 	private void insert(final String query, final User user) {
@@ -86,19 +71,6 @@ public class UserDao {
 
 		};
 		dbset.Template_Update(dbset.dbinit(), db_tmp);
-	}
-
-	private List<Map<String, String>> login(final String query) {
-		DB_TemQuery db_tmp = new DB_TemQuery() {
-			@Override
-			public ResultSet QueryTemplate(Connection con) throws SQLException {
-				PreparedStatement pstmt = con.prepareStatement(query);
-				logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + query);
-				ResultSet rs = pstmt.executeQuery();
-				return rs;
-			}
-		};
-		return dbset.Template_Query(dbset.dbinit(), db_tmp);
 	}
 
 	//  method dosen't suitable for this class ...

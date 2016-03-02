@@ -173,7 +173,7 @@
 								<th colspan="2" scope="row"><input type="button" value="등록"
 									onclick="writeCheck();"> <input type="button"
 									value="삭제"
-									onClick="location.href='main.do?main_action=board_delete&num=${board[0].getNum}';">
+									onClick="location.href='main.do?main_action=board_delete&num=${board[0].num}';">
 									<input type="button" value="취소" onclick="fadelayer();"></th>
 							</tr>
 						</table>

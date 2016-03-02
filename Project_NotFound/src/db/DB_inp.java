@@ -60,7 +60,7 @@ public class DB_inp {
 		}
 	}
 
-	public List<Map<String, String>> Template_Query(Connection conn, DB_TemQuery temp) {
+	private List<Map<String, String>> Template_Query(Connection conn, DB_TemQuery temp) {
 		List<Map<String, String>> list = null;
 		Map<String, String> map = null;
 		PreparedStatement pstmt = null;
@@ -75,7 +75,6 @@ public class DB_inp {
 				map = new HashMap<String, String>();
 				for (int i = 1; i <= numberOfColumns; i++) {
 					map.put(rsmd.getColumnName(i), rs.getString(i));
-					logger.info(rs.getString(i));
 				}
 				list.add(map);
 			}
@@ -97,6 +96,19 @@ public class DB_inp {
 			}
 		}
 		return list;
+	}
+	
+	public List<Map<String, String>> getList(final String query) {
+		DB_TemQuery temp = new DB_TemQuery() {
+			@Override
+			public ResultSet QueryTemplate(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(query);
+				ResultSet rs = pstmt.executeQuery();
+				logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + query);
+				return rs;
+			}
+		};
+		return Template_Query(dbinit(), temp);
 	}
 
 }

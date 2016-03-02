@@ -9,7 +9,6 @@
 <fullyQualifiedTypeName name="db.Template"/>
 <fullyQualifiedTypeName name="java.sql.SQLException"/>
 <fullyQualifiedTypeName name="db.DB_set"/>
-<fullyQualifiedTypeName name="java.lang.StringBuilder"/>
 <fullyQualifiedTypeName name="db.DB_Template"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.sql.ResultSetMetaData"/>
@@ -21,4 +20,5 @@
 <fullyQualifiedTypeName name="db.DB_inp"/>
 <fullyQualifiedTypeName name="db.DB_TemUpdate"/>
 <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+<fullyQualifiedTypeName name="java.lang.StringBuilder"/>
 </qualifiedTypeNameHistroy>
