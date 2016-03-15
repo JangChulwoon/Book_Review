@@ -65,12 +65,17 @@ public class BoarderDao {
 		return dbset.getList(strbuild.toString());
 	}
 
+	public List<Map<String, String>> boarder_count() {
+		String sql = "SELECT count(*) as size FROM board;";
+		return dbset.getList(sql);
+	}
+
 	public void Board_Delete(String num) {
 		StringBuilder stb = new StringBuilder("DELETE from board where num =");
 		stb.append("'").append(num).append("';");
 		delete(stb.toString());
 	}
-	
+
 	public void Reple_Delete(String num) {
 		StringBuilder stb = new StringBuilder("DELETE from reple where num =");
 		stb.append("'").append(num).append("';");
@@ -146,100 +151,25 @@ public class BoarderDao {
 		dbset.Template_Update(dbset.dbinit(), temp);
 	}
 
-	// 글의 수를 가져옴
-	public int getBoardCount(Connection conn) {
-		int size = 0;
-		try {
-			String sql = "SELECT count(*) as size FROM board;";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			rs.next();
-			size = rs.getInt("size");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return size;
+	public List<Map<String, String>> getBoardCount_search(String keyword, String key) {
+		StringBuilder str = new StringBuilder("SELECT  count(*) as size FROM board where ");
+		str.append(keyword).append(" like '%").append(key).append("%';");
+		return dbset.getList(str.toString());
 	}
 
-	// 검색시에 글 갯수를 가져옴
-	public int getBoardCount_search(Connection conn, String keyword, String key) {
-		int size = 0;
-		try {
-			String sql = "SELECT  count(*) as size FROM board where " + keyword + " like '%" + key + "%';";
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-			rs.next();
-			size = rs.getInt("size");
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return size;
+	public List<Map<String, String>> boarder_List(int first) {
+		StringBuilder str = new StringBuilder("SELECT num,subject,bookname,writer FROM board order by num desc limit ");
+		str.append(first).append(",10;");
+		return dbset.getList(str.toString());
 	}
 
-	// 게시글을 list 형태로 담아서 뿌려줌
-	public List<Board> boarder_selectDB(Connection conn, int start, int last) {
-		List<Board> list = null;
-		try {
-
-			String sql = "SELECT num,subject,bookname,writer FROM board order by num desc limit ?,?;";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, last);
-			rs = pstmt.executeQuery(); // 쿼리를 실행한다.
-			list = new ArrayList<Board>();
-			while (rs.next()) {
-				// subject, writer, contents, reg_date, publication_date,
-				// book_img, description
-				Board board = new Board();
-				board.setNum(rs.getInt("num"));
-				board.setSubject(rs.getString("subject"));
-				board.setWriter(rs.getString("writer"));
-				board.setBookname(rs.getString("bookname"));
-				list.add(board);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return list;
+	public List<Map<String, String>> boarder_SearchDB(String keyword, String key, int start) {
+		StringBuilder str = new StringBuilder(
+				"SELECT *,convert(description using utf8) as descriptions FROM board where ");
+		str.append(keyword).append(" like '%").append(key).append("%' order by num desc limit ").append(start)
+				.append(",10;");
+		logger.info(str);
+		return dbset.getList(str.toString());
 	}
 
-	public List<Board> boarder_SearchDB(Connection conn, String keyword, String key, int start, int last) {
-		List<Board> list = null;
-		try {
-			String sql = "SELECT *,convert(description using utf8) as descriptions FROM board where " + keyword
-					+ " like '%" + key + "%' order by num desc limit ?,?;";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, last);
-			rs = pstmt.executeQuery();
-			list = new ArrayList<Board>();
-
-			while (rs.next()) {
-				// subject, writer, contents, reg_date, publication_date,
-				// book_img, description
-				Board board = new Board();
-				board.setNum(rs.getInt("num"));
-				board.setDate(rs.getString("reg_date"));
-				board.setSubject(rs.getString("subject"));
-				board.setWriter(rs.getString("writer"));
-				board.setContents(rs.getString("contents"));
-				board.setBookname(rs.getString("bookname"));
-				board.setAuthor(rs.getString("author"));
-				board.setPublisher(rs.getString("publisher"));
-				board.setPublication_date(rs.getString("publication_date"));
-				board.setBook_img(rs.getString("book_img"));
-				board.setDescription(rs.getString("descriptions"));
-				list.add(board);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-		}
-		return list;
-	}
 }

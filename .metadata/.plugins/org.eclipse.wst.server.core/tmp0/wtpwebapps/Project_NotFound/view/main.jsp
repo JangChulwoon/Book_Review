@@ -80,11 +80,11 @@
 								<c:forEach var="i" begin="0" end="${fn:length(board)-1}"
 									step="1">
 									<tr>
-										<td width="10%" align="center">${board[i].getNum()}</td>
+										<td width="10%" align="center">${board[i].num}</td>
 										<td width="50%" align="center"><a
-											href="/NotFound/main.do?main_action=detail&num=${board[i].getNum()}">${board[i].getSubject()}</a></td>
-										<td width="40%" align="center">${board[i].getBookname()}</td>
-										<td width="20%" align="center">${board[i].getWriter()}</td>
+											href="/NotFound/main.do?main_action=detail&num=${board[i].num}">${board[i].subject}</a></td>
+										<td width="40%" align="center">${board[i].bookname}</td>
+										<td width="20%" align="center">${board[i].writer}</td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>
@@ -98,7 +98,8 @@
 										<a href="/NotFound/main.do?current_page=${page-1}"
 											class="btn btn-default">이전페이지</a>
 									</c:otherwise>
-								</c:choose> ${page} <c:choose>
+								</c:choose> ${page} 
+								<c:choose>
 									<c:when test="${ page eq size}">
 									</c:when>
 									<c:otherwise>

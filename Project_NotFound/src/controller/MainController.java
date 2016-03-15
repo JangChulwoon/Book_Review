@@ -66,20 +66,18 @@ public class MainController extends HttpServlet {
 		} else if ("detail".equals(action)) {
 			// 여기서는 리플 정보와 게시판 정보 두개를 가져와서 뿌려주는 작업을 해줘야한다 ...
 			String num = request.getParameter("num");
-			List<Map<String,String>> list = boarderDao.boarder_detail(num);
-			List<Map<String,String>> replelist = boarderDao.reple_selectAll(num);
+			List<Map<String, String>> list = boarderDao.boarder_detail(num);
+			List<Map<String, String>> replelist = boarderDao.reple_selectAll(num);
 			request.setAttribute("reple", replelist);
 			request.setAttribute("board", list);
-			RequestDispatcher rd = request.getRequestDispatcher("/view/result.jsp");
-			rd.forward(request, response);
+			Dispatcher(request, response, "/view/result.jsp");
 		} else if ("reply".equals(action)) {
 			String id = request.getParameter("id");
 			String contents = request.getParameter("context").replaceAll("\r\n", "<br>");
 			String num = request.getParameter("num");
 			Reple reple = new Reple(Integer.parseInt(num), id, contents);
 			boarderDao.Reple_insert(reple);
-			RequestDispatcher rd = request.getRequestDispatcher("/main.do?main_action=detail");
-			rd.forward(request, response);
+			Dispatcher(request, response, "/main.do?main_action=detail");
 		} else if ("board_update".equals(action)) {
 			Board board = new Board(request.getParameter("subject"), request.getParameter("id"),
 					request.getParameter("contents"), request.getParameter("bookname"), request.getParameter("author"),
@@ -94,50 +92,39 @@ public class MainController extends HttpServlet {
 		} else if ("search".equals(action)) {
 			String keyword = request.getParameter("search_value");
 			String key = request.getParameter("search_key");
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			String current_page = request.getParameter("current_page");
-			// 무슨 페이지를 보여줄건가 ?
-			int board_count = boarderDao.getBoardCount_search(conn, keyword, key);
-			// 전체 개수를 가져왓어
+			List<Map<String, String>> count_list = boarderDao.getBoardCount_search(keyword, key);
+			int board_count = Integer.parseInt(count_list.get(0).get("size"));
 			int current_pageInt = (current_page == null) ? 1 : Integer.parseInt(current_page);
-			// 사용자가 선택한 페이지를 줄꺼야
-			int page_count = (board_count % 10 == 0 && board_count != 0) ? (board_count / 10) : (board_count / 10) + 1;
-			// 만약에 10에 딱 떨어지면 갯수는 / 10 이고 아니면 +1을 해줄꺼야
+			int page_count = (board_count != 0 && board_count % 10 == 0) ? (board_count / 10) : (board_count / 10) + 1;
 			int first_page = ((current_pageInt - 1) * 10);
-			// 시작할 번호 ? 1 ~ / 11 ~ 이런식
-			int last_page = first_page + 10;
-			List list = boarderDao.boarder_SearchDB(conn, keyword, key, first_page, last_page);
+			List<Map<String, String>> list = boarderDao.boarder_SearchDB(keyword, key, first_page);
 			request.setAttribute("page", current_pageInt);
 			request.setAttribute("size", page_count);
 			request.setAttribute("board", list);
-			RequestDispatcher rd = request.getRequestDispatcher("/view/main.jsp");
-			rd.forward(request, response);
-			// 이걸이제 보여주면 되나 ..?
+			Dispatcher(request, response, "/view/main.jsp");
 		} else {
-			DB_inp dbset = new DB_inp();
-			Connection conn = dbset.dbinit(); // 디비 커넥션 연결
 			String current_page = request.getParameter("current_page");
-			// 무슨 페이지를 보여줄건가 ?
-			int board_count = boarderDao.getBoardCount(conn);
-			// 전체 개수를 가져왓어
+			List<Map<String, String>> count_list = boarderDao.boarder_count();
+			int board_count = Integer.parseInt(count_list.get(0).get("size"));
+			// board count get
 			int current_pageInt = (current_page == null) ? 1 : Integer.parseInt(current_page);
 			// 사용자가 선택한 페이지를 줄꺼야
-			int page_count = (board_count % 10 == 0) ? (board_count / 10) : (board_count / 10) + 1;
+			int page_count = (board_count != 0 && board_count % 10 == 0) ? (board_count / 10) : (board_count / 10) + 1;
 			// 만약에 10에 딱 떨어지면 갯수는 / 10 이고 아니면 +1을 해줄꺼야
 			int first_page = ((current_pageInt - 1) * 10);
-			// 시작할 번호 ? 1 ~ / 11 ~ 이런식
-			int last_page = first_page + 10;
-			// 10 20 30 ....
-			List list = boarderDao.boarder_selectDB(conn, first_page, last_page);
+			List<Map<String, String>> board_list = boarderDao.boarder_List(first_page);
 			request.setAttribute("page", current_pageInt);
 			request.setAttribute("size", page_count);
-			request.setAttribute("board", list);
-			RequestDispatcher rd = request.getRequestDispatcher("/view/main.jsp");
-			rd.forward(request, response);
-			// 여기가 action의 정보가 없거나 , 의도하지 않은 정보가 들어온것 ..
+			request.setAttribute("board", board_list);
+			Dispatcher(request, response, "/view/main.jsp");
 		}
 
 	}
 
+	public void Dispatcher(HttpServletRequest request, HttpServletResponse response, String path)
+			throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher(path);
+		rd.forward(request, response);
+	}
 }
