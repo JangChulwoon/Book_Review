@@ -54,8 +54,7 @@
 				<h2 class="head-line">My Editor ?</h2>
 				<br> <br>
 				<p>
-					앞으로의 일정과 지난 일정을 담아놓는 공간입니다. <br> 얄라 얄라 얄라셩 얄라리 얄라 <br>
-					이런들 어떠하고 저런들 어떠하리 ...<br> 한줄만 더 만들어놓으렴 <br>
+					우선은 책을 읽고 후기를 남기는것사이트 입니다.
 				</p>
 				<div class="row text-center"></div>
 			</div>

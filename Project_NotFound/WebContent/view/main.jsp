@@ -39,6 +39,7 @@
 				<li role="presentation" class="active"><a href="#">Home</a></li>
 				<li role="presentation"><a href="#"
 					onclick="layer_open('layer2');return false;">Write</a></li>
+				<li role="presentation"><a href="#">MyPage</a></li>
 			</ul>
 			<hr>
 		</div>

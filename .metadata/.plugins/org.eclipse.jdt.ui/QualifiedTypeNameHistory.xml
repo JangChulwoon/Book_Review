@@ -21,4 +21,5 @@
 <fullyQualifiedTypeName name="db.DB_TemUpdate"/>
 <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
 <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
+<fullyQualifiedTypeName name="java.lang.FunctionalInterface"/>
 </qualifiedTypeNameHistroy>
