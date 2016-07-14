@@ -12,22 +12,22 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
 public class SearchApi {
-	// ¸®½ºÆ®¸¦ ¸¸µé¾î¼­ .. ´ãÀ»±î ?
+	// ë¦¬ìŠ¤íŠ¸ë¥¼ ë§Œë“¤ì–´ì„œ .. ë‹´ì„ê¹Œ ?
 
 	public String[][] Search(String[][] value, String keyword) {
 		URL url;
 		try {
 			keyword = URLEncoder.encode(keyword, "UTF-8");
-			url = new URL("https://apis.daum.net/search/book?apikey=66c51867d890a469e648e90c610bdcd5&output=json&q="
+			url = new URL("https://apis.daum.net/search/book?apikey=apikey&output=json&q="
 					+ keyword);
-			// ÇÑ±Û Ã³¸®¸¦ À§ÇØ InputStreamReader¸¦ UTF-8 ÀÎÄÚµùÀ¸·Î °¨½Ñ´Ù.
+			// í•œê¸€ ì²˜ë¦¬ë¥¼ ìœ„í•´ InputStreamReaderë¥¼ UTF-8 ì¸ì½”ë”©ìœ¼ë¡œ ê°ì‹¼ë‹¤.
 			InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
 			// parse
-			// ¸Þ¼Òµå
+			// ë©”ì†Œë“œ
 			JSONObject object = (JSONObject) JSONValue.parseWithException(isr);
-			// °´Ã¼
+			// ê°ì²´
 			JSONObject channel = (JSONObject) (object.get("channel"));
-			// item ¹è¿­
+			// item ë°°ì—´
 			JSONArray items = (JSONArray) channel.get("item");
 			int size = items.size() > 5 ? 5 : items.size();
 			for (int i = 0; i < size; i++) {
@@ -39,7 +39,7 @@ public class SearchApi {
 				value[i][3] = (String) obj1.get("author");
 				value[i][4] = (String) obj1.get("pub_date");
 				value[i][5] = (String) obj1.get("pub_nm");
-				// ´Ù Áö¿î´Ù.. !
+				// ë‹¤ ì§€ìš´ë‹¤.. !
 			}
 			value[5][5] = "" + size;
 			return value;
