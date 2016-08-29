@@ -26,7 +26,7 @@ public class DB_inp {
 		// DB init
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/notfound", "jsp", "passwd");
+			conn = DriverManager.getConnection("", "", "");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -41,7 +41,7 @@ public class DB_inp {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = temp.QueryTemplate(conn);
-			pstmt.executeUpdate(); // Äõ¸®¸¦ ½ÇÇàÇÑ´Ù.
+			pstmt.executeUpdate(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -70,7 +70,7 @@ public class DB_inp {
 			rs = temp.QueryTemplate(conn);
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int numberOfColumns = rsmd.getColumnCount();
-			// ¹«½¼ ÇüÅÂ
+			// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			while (rs.next()) {
 				map = new HashMap<String, String>();
 				for (int i = 1; i <= numberOfColumns; i++) {
@@ -78,6 +78,8 @@ public class DB_inp {
 				}
 				list.add(map);
 			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

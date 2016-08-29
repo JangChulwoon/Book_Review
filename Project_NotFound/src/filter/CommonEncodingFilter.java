@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 
 /**
  * Servlet Filter implementation class CommonEncodingFilter
@@ -15,12 +18,13 @@ import javax.servlet.annotation.WebFilter;
 @WebFilter("/CommonEncodingFilter")
 public class CommonEncodingFilter implements Filter {
 	/**
-	 * ÀÎÄÚµùÀ» ¼öÇàÇÒ ÀÎÄÚµù Ä³¸¯ÅÍ ¼Â ÁöÁ¤
+	 * ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Úµï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	 */
 	private String encoding = null;
+	static Logger logger = Logger.getLogger(CommonEncodingFilter.class);
 
 	/**
-	 * ÇÊÅÍ ¼³Á¤ °ü¸®ÀÚ
+	 * ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	protected FilterConfig filterConfig = null;
 
@@ -43,9 +47,11 @@ public class CommonEncodingFilter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-
+		
 		if (request.getCharacterEncoding() == null) {
 			if (encoding != null) {
+				String path = ((HttpServletRequest) request).getRequestURI();
+				logger.info("enco path ::  ::" + path);
 				request.setCharacterEncoding(encoding);
 			}
 		}

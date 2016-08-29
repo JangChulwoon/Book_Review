@@ -33,11 +33,11 @@ function checklogout() {
 }
 window.fbAsyncInit = function() {
 	FB.init({
-		appId : 'id입력',
+		appId : '225973124471432',
 		cookie : true, // enable cookies to allow the server to access
 		// the session
 		xfbml : true, // parse social plugins on this page
-		version : 'v2.4'
+		version : 'v2.7'
 	});
 	
 };

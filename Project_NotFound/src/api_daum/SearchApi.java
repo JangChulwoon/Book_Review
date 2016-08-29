@@ -12,22 +12,22 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
 
 public class SearchApi {
-	// 리스트를 만들어서 .. 담을까 ?
+	// 由ъ뒪�듃瑜� 留뚮뱾�뼱�꽌 .. �떞�쓣源� ?
 
 	public String[][] Search(String[][] value, String keyword) {
 		URL url;
 		try {
 			keyword = URLEncoder.encode(keyword, "UTF-8");
-			url = new URL("https://apis.daum.net/search/book?apikey=apikey&output=json&q="
+			url = new URL("https://apis.daum.net/search/book?apikey=4bf34929379c7dab382bce4cd8177383&output=json&q="
 					+ keyword);
-			// 한글 처리를 위해 InputStreamReader를 UTF-8 인코딩으로 감싼다.
+			// �븳湲� 泥섎━瑜� �쐞�빐 InputStreamReader瑜� UTF-8 �씤肄붾뵫�쑝濡� 媛먯떬�떎.
 			InputStreamReader isr = new InputStreamReader(url.openConnection().getInputStream(), "UTF-8");
 			// parse
-			// 메소드
+			// 硫붿냼�뱶
 			JSONObject object = (JSONObject) JSONValue.parseWithException(isr);
-			// 객체
+			// 媛앹껜
 			JSONObject channel = (JSONObject) (object.get("channel"));
-			// item 배열
+			// item 諛곗뿴
 			JSONArray items = (JSONArray) channel.get("item");
 			int size = items.size() > 5 ? 5 : items.size();
 			for (int i = 0; i < size; i++) {
@@ -39,7 +39,7 @@ public class SearchApi {
 				value[i][3] = (String) obj1.get("author");
 				value[i][4] = (String) obj1.get("pub_date");
 				value[i][5] = (String) obj1.get("pub_nm");
-				// 다 지운다.. !
+				// �떎 吏��슫�떎.. !
 			}
 			value[5][5] = "" + size;
 			return value;

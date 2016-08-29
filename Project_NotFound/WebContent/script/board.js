@@ -22,7 +22,6 @@ function writeCheck() {
 		form.contents.focus();
 		return;
 	}
-
 	form.submit();
 }
 

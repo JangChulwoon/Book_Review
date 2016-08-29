@@ -23,7 +23,6 @@ public class BoarderDao {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 	private DB_inp dbset = null;
-	// 현재 시간을 저장 하는 로직
 	static Logger logger = Logger.getLogger(BoarderDao.class);
 
 	public BoarderDao() {
@@ -56,6 +55,7 @@ public class BoarderDao {
 	public void boarder_insert(Board board) {
 		Binsert(board,
 				"insert into board (subject, writer, contents, reg_date, bookname, author, publisher, publication_date, book_img, description) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
+		System.out.println(board.getBookname());
 	}
 
 	public List<Map<String, String>> reple_selectAll(String num) {
@@ -134,6 +134,7 @@ public class BoarderDao {
 			@Override
 			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
 				// TODO Auto-generated method stub
+				System.out.println(board.getBookname());
 				PreparedStatement pstmt = con.prepareStatement(query);
 				pstmt.setString(1, board.getSubject());
 				pstmt.setString(2, board.getWriter());
@@ -145,6 +146,7 @@ public class BoarderDao {
 				pstmt.setString(8, board.getPublication_date());
 				pstmt.setString(9, board.getBook_img());
 				pstmt.setString(10, board.getDescription());
+				logger.info(new Timestamp(System.currentTimeMillis()) + " check :: " + pstmt);
 				return pstmt;
 			}
 		};

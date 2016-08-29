@@ -54,7 +54,8 @@ public class MainController extends HttpServlet {
 		// TODO Auto-generated method stub
 		String action = request.getParameter("main_action");
 		BoarderDao boarderDao = new BoarderDao();
-		// ÀÌ·¸°Ô ¼³°èÇØµµ µÇ´Â°Ç°¡ ...
+		
+		// ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Øµï¿½ ï¿½Ç´Â°Ç°ï¿½ ...
 		if ("write".equals(action)) {
 			Board board = new Board(request.getParameter("subject"), request.getParameter("id"),
 					request.getParameter("contents").replaceAll("\r\n", "<br>"), request.getParameter("bookname"),
@@ -64,7 +65,7 @@ public class MainController extends HttpServlet {
 			boarderDao.boarder_insert(board);
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("detail".equals(action)) {
-			// ¿©±â¼­´Â ¸®ÇÃ Á¤º¸¿Í °Ô½ÃÆÇ Á¤º¸ µÎ°³¸¦ °¡Á®¿Í¼­ »Ñ·ÁÁÖ´Â ÀÛ¾÷À» ÇØÁà¾ßÇÑ´Ù ...
+			// ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ ï¿½Ñ·ï¿½ï¿½Ö´ï¿½ ï¿½Û¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ ...
 			String num = request.getParameter("num");
 			List<Map<String, String>> list = boarderDao.boarder_detail(num);
 			List<Map<String, String>> replelist = boarderDao.reple_selectAll(num);
@@ -109,9 +110,9 @@ public class MainController extends HttpServlet {
 			int board_count = Integer.parseInt(count_list.get(0).get("size"));
 			// board count get
 			int current_pageInt = (current_page == null) ? 1 : Integer.parseInt(current_page);
-			// »ç¿ëÀÚ°¡ ¼±ÅÃÇÑ ÆäÀÌÁö¸¦ ÁÙ²¨¾ß
+			// ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ï¿½
 			int page_count = (board_count != 0 && board_count % 10 == 0) ? (board_count / 10) : (board_count / 10) + 1;
-			// ¸¸¾à¿¡ 10¿¡ µü ¶³¾îÁö¸é °¹¼ö´Â / 10 ÀÌ°í ¾Æ´Ï¸é +1À» ÇØÁÙ²¨¾ß
+			// ï¿½ï¿½ï¿½à¿¡ 10ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ / 10 ï¿½Ì°ï¿½ ï¿½Æ´Ï¸ï¿½ +1ï¿½ï¿½ ï¿½ï¿½ï¿½Ù²ï¿½ï¿½ï¿½
 			int first_page = ((current_pageInt - 1) * 10);
 			List<Map<String, String>> board_list = boarderDao.boarder_List(first_page);
 			request.setAttribute("page", current_pageInt);
