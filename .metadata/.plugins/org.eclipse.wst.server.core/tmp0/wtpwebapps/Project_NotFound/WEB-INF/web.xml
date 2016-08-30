@@ -60,6 +60,7 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>Encoding Filter</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
 </web-app>

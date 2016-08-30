@@ -1,141 +1,265 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-	pageEncoding="utf-8"%>
+    pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<!--  부트 부분 -->
-<!-- BOOTSTRAP CORE CSS -->
-<link href="/NotFound/css/bootstrap.css" rel="stylesheet" />
-<!-- FONT AWESOME ICONS STYLES -->
-<link href="/NotFound/css/font-awesome.css" rel="stylesheet" />
-<!-- CUSTOM CSS -->
-<link href="/NotFound/css/styles.css" rel="stylesheet" />
-<!--  jauery를 사용하기위해선 이걸 작성해줘야함 ..  -->
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-	type="text/javascript"></script>
-<script type="text/javascript" src="/NotFound/script/facebookscript.js"></script>
-<script type="text/javascript" src="/NotFound/script/popup.js"></script>
-<link href="/NotFound/css/style.css" rel="stylesheet">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>BookClip</title>
+<!--  jquery-->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+	
+<!-- facebook -->
+<script type="text/javascript" src="../resources/js/facebookscript.js"></script>
+
+<!-- Bootstrap Core CSS -->
+<link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+
+<!--  Custom Js -->
+<script type="text/javascript" src="../resources/js/index.js"></script>
+
+<!-- Custom CSS -->
+<link href="../resources/css/landing-page.css" rel="stylesheet">
+<link href="../resources/css/style.css" rel="stylesheet">
+
+<!-- Custom Fonts -->
+<link href="../resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
 </head>
 <body>
-	<div id="home">
-		<div class="overlay">
-			<header id="header">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-6">
-						<h2>Editor</h2>
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-fixed-top topnav"
+		role="navigation">
+		<div class="container topnav">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand topnav" href="#">Start Bootstrap</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#about">About</a></li>
+					<li><a href="#services">Services</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</div>
+		<!-- /.container -->
+	</nav>
+
+
+	<!-- Header -->
+	<a name="about"></a>
+	<div class="intro-header">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="intro-message">
+						<h1>Book Clip</h1>
+						<h3>보고있는 책을 기록해보세요</h3>
+						<hr class="intro-divider">
+						
+						<form class="form-horizontal" action="/NotFound/index.do" method="post" name ="login">
+							<input type="hidden" name="action" value="login">
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<div class="col-sm-14">
+										<input type="text" id="userid" name="userid" class="form-control" placeholder="ID" style="min-width: 20em;">
+									</div>
+								</li>
+							</ul>
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<div class="col-lg-14">
+										<input type="password" id="userpd" name="userpd" class="form-control" placeholder="PW" style="min-width: 20em;">
+									</div>
+								</li>
+							</ul>
+							<br>
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<a onclick="submit()" class="btn btn-default btn-lg box_size" >
+										<i class="fa fa-play fa-fw"></i> 
+										<span class="network-name">Login</span>
+									</a>
+									<a href="#" class="btn btn-default btn-lg box_size">
+											<i class="fa fa-cog fa-fw"></i> 
+											<span class="network-name">Join</span>
+									</a>
+									<a onclick="checkLoginState();" class="btn btn-default btn-lg box_size">
+										<i class="fa fa-facebook fa-fw"></i> 
+										<span class="network-name">Facebook</span>
+									</a>
+								</li>
+							</ul>
+						</form>
 					</div>
 				</div>
 			</div>
-			</header>
-			<div class="container topcontainer">
-				<div class="row scroll-me">
-					<div class="col-lg-6">
-						<h4>
-							내 하루를 한 장 한 장 넘기는 순간을 떠올려 보세요. <br>내 이야기를 만질 수 있는 것<br>
-							내 하루들을 펼쳐보는 일이 가능할지 모르죠. <br>
-						</h4>
-						<a href="#about" class="btn btn-custom btn-two">Start </a> <a
-							href="#clients" class="btn btn-custom btn-one"
-							onclick="layer_open('layer2');return false;">Join</a>
-					</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+	<!-- /.intro-header -->
+
+	<!-- Page Content -->
+
+	<a name="services"></a>
+	<div class="content-section-a">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-5 col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">
+						Death to the Stock Photo:<br>Special Thanks
+					</h2>
+					<p class="lead">
+						A special thanks to <a target="_blank" href="http://join.deathtothestockphoto.com/">Death to the
+							Stock Photo</a> for providing the photographs that you see in this
+						template. Visit their website to become a member.
+					</p>
+				</div>
+				<div class="col-lg-5 col-lg-offset-2 col-sm-6">
+					<img class="img-responsive" src="img/ipad.png" alt="">
+				</div>
+			</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+	<!-- /.content-section-a -->
+
+	<div class="content-section-b">
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">
+						3D Device Mockups<br>by PSDCovers
+					</h2>
+					<p class="lead">
+						Turn your 2D designs into high quality, 3D product shots in
+						seconds using free Photoshop actions by <a target="_blank"
+							href="http://www.psdcovers.com/">PSDCovers</a>! Visit their
+						website to download some of their awesome, free photoshop actions!
+					</p>
+				</div>
+				<div class="col-lg-5 col-sm-pull-6  col-sm-6">
+					<img class="img-responsive" src="img/dog.png" alt="">
+				</div>
+			</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+	<!-- /.content-section-b -->
+
+	<div class="content-section-a">
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-5 col-sm-6">
+					<hr class="section-heading-spacer">
+					<div class="clearfix"></div>
+					<h2 class="section-heading">
+						Google Web Fonts and<br>Font Awesome Icons
+					</h2>
+					<p class="lead">
+						This template features the 'Lato' font, part of the <a
+							target="_blank" href="http://www.google.com/fonts">Google Web
+							Font library</a>, as well as <a target="_blank"
+							href="http://fontawesome.io">icons from Font Awesome</a>.
+					</p>
+				</div>
+				<div class="col-lg-5 col-lg-offset-2 col-sm-6">
+					<img class="img-responsive" src="img/phones.png" alt="">
+				</div>
+			</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+	<!-- /.content-section-a -->
+
+	<a name="contact"></a>
+	<div class="banner">
+
+		<div class="container">
+
+			<div class="row">
+				<div class="col-lg-6">
+					<h2>Connect to Start Bootstrap:</h2>
+				</div>
+				<div class="col-lg-6">
+					<ul class="list-inline banner-social-buttons">
+						<li><a href="https://twitter.com/SBootstrap"
+							class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i>
+								<span class="network-name">Twitter</span></a></li>
+						<li><a
+							href="https://github.com/IronSummitMedia/startbootstrap"
+							class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i>
+								<span class="network-name">Github</span></a></li>
+						<li><a href="#" class="btn btn-default btn-lg"><i
+								class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<!-- /.container -->
+
+	</div>
+	<!-- /.banner -->
+
+	<!-- Footer -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<ul class="list-inline">
+						<li><a href="#">Home</a></li>
+						<li class="footer-menu-divider">&sdot;</li>
+						<li><a href="#about">About</a></li>
+						<li class="footer-menu-divider">&sdot;</li>
+						<li><a href="#services">Services</a></li>
+						<li class="footer-menu-divider">&sdot;</li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+					<p class="copyright text-muted small">Copyright &copy; Your
+						Company 2014. All Rights Reserved</p>
 				</div>
 			</div>
 		</div>
-	</div>
-	<section id="about">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-6">
-				<h2 class="head-line">My Editor ?</h2>
-				<br> <br>
-				<p>
-					우선은 책을 읽고 후기를 남기는것사이트 입니다.
-				</p>
-				<div class="row text-center"></div>
-			</div>
-			<div class="col-lg-6 text-center">
-				<h2 class="head-line">Start</h2>
-				<br>
-				<form class="form-horizontal" action="/NotFound/index.do"
-					method="post">
-					<input type="hidden" name="action" value="login">
-					<div class="form-group">
-						<label class="col-sm-2 control-label">ID</label>
-						<div class="col-sm-10">
-							<input type="text" id="userid" name="userid" class="form-control">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label">Password</label>
-						<div class="col-sm-10">
-							<input type="password" id="userpd" name="userpd"
-								class="form-control">
-						</div>
-					</div>
-					<br>
-					<div class="buttonalign">
-						<input type="submit" value="전송" class="btn btn-info">
-						<fb:login-button = onlogin="checkLoginState();"></fb:login-button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	</section>
-	<!-- 여기부터 로그인 부분의 div -->
+	</footer>
 
-	<div class="layer">
-		<div class="bg"></div>
-		<div id="layer2" class="pop-layer">
-			<div class="pop-container">
-				<div class="pop-conts" style="margin-left: 20%; margin-top: 10%">
-					<form method="post" name="insertUser" action="/NotFound/index.do"
-						class="form-inline">
-						<label for="control-label" style="font-size: 20px">회원가입</label>
-						<br><br>
-						<input type="hidden" name="action" id="action" value="join">
-						<table name="joincss">
-							<tr class="form-group" style="width: 80%; margin-top: 5%;">
-								<td width="100px"><label for="control-label">Name</label></td>
-								<td ><input type="text" name="joinname" class="form-control"></td>
-							</tr>
-							
-							<tr class="form-group"  style="width: 80%; margin-top: 5%; ">
-								<td width="100px"><label for="control-label">아이디</label></td>
-								<td><input type="text" name="joinid" id="joinid" class="form-control"> 
-								<input type="button" value="idcheck" class="btn btn-info" onclick="checkID(insertUser.joinid.value)"></td>
-							</tr>
+	<!-- jQuery -->
+	<script src="../resources/js/jquery.js"></script>
 
-							<tr class="form-group"  style="width: 80%; margin-top: 5%; ">
-								<td width="100px"><label for="control-label">비밀번호</label></td>
-								<td><input type="password" name="joinpass" class="form-control"></td>
-							</tr>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="../resources/js/bootstrap.min.js"></script>
 
-							<tr class="form-group"  style="width: 80%; margin-top: 5%; " >
-								<td width="100px" colspan="2"><label for="control-label">확인</label></td>
-								<td><input type="password" name="joinrepass" onBlur="pass_Check()" class="form-control">&nbsp;&nbsp;
-								</td>
-							</tr>
-							<tr>
-								<td><input type="text" name="pwdCheck" id="pwdCheck" size="30" style="border-width: 0px" readonly></td>
-							</tr>
-							<tr  style="width: 80%;">
-								<td colspan="2">
-								<input type="button" value="가입하기" class="btn btn-info" onclick="insert_Clear();">&nbsp;
-								<input type="button" value="취소" class="btn btn-info" onclick="fadelayer();">
-								</td>
-							</tr>
-						</table>
-					</form>
-					<!--// content-->
-				</div>
-			</div>
-		</div>
-	</div>
 </body>
 </html>

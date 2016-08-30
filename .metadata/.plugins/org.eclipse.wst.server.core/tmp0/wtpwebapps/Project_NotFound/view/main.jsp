@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html;" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html;" pageEncoding="utf-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c_rt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -15,7 +15,7 @@
 <script type="text/javascript" src="/NotFound/script/board.js"></script>
 <script type="text/javascript" src="/NotFound/script/popup.js"></script>
 <link href="/NotFound/css/style.css" rel="stylesheet">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html;">
 <title>Insert title here</title>
 </head>
 <body>

@@ -42,7 +42,7 @@ public class IndexController extends HttpServlet {
 		String action = request.getParameter("action");
 		UserDao userdao = new UserDao();
 		if (action == null || action.length() == 0) {
-			// ¿©±â¼­ µÚ·Î °¡´Â°Ô ¾Æ´Ï¶ó ¿¡·¯ÆäÀÌÁö¸¦ µû·Î ¸¸µé¾î¼­ ±×ÂÊÀ¸·Î º¸³»ÀÚ ..
+			// ï¿½ï¿½ï¿½â¼­ ï¿½Ú·ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½Æ´Ï¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ..
 			userdao.jsback(response);
 		} else if (action.equals("join")) {
 			User user = new User(request.getParameter("joinid"), request.getParameter("joinpass"),
@@ -51,7 +51,7 @@ public class IndexController extends HttpServlet {
 			input_Session(request, request.getParameter("joinid"), request.getParameter("joinname"));
 			response.sendRedirect("/NotFound/main.do");
 		} else if (action.equals("login")) {
-			// ¿©±â¼­ µðºñ °¡Á®¿Í¼­ °Ë»ç¸¦ ÇØ¾ß´ï ...
+			// login ..
 			String email = request.getParameter("userid");
 			String pass = request.getParameter("userpd");
 			list = userdao.user_login(email);

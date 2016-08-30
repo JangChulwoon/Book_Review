@@ -1,0 +1,7 @@
+/**
+ * 
+ */
+function submit() {
+	var form = document.login;
+	form.submit();
+}
