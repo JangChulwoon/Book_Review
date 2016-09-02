@@ -1,0 +1,8 @@
+
+.box_size{
+	min-width: 5em;
+}
+
+.joinform{
+	display: inline;
+}

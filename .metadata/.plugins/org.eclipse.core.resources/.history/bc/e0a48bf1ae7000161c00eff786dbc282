@@ -1,0 +1,71 @@
+package test;
+
+import java.security.MessageDigest;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
+
+public class Index_DBTest {
+	static Logger logger = Logger.getLogger(Index_DBTest.class);
+
+/*	@Test
+	public void insertTest() {
+		UserDao dao = new UserDao();
+		dao.user_deleteAll();
+		User user = new User("lus", "pass", "name");
+		dao.user_insert(user);
+		assertThat(user.getUseremail(), is("lus"));
+	}
+	
+	
+	@Test
+	public void login() {
+		UserDao dao = new UserDao();
+		dao.user_deleteAll();
+		User user = new User("lus", "pass", "name");
+		dao.user_insert(user);
+		assertThat(user.getUseremail(), is("lus"));
+		List<Map<String,String>> list =  dao.user_login("te");
+		assertThat(list.get(0).get("email"), is(user.getUseremail()));
+		
+	}*/
+	@Test
+	public void SHA(){
+		   String base = "password123";
+		   
+	        try{
+	            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	            byte[] hash = digest.digest(base.getBytes("UTF-8"));
+	            StringBuffer hexString = new StringBuffer();
+	 
+	            for (int i = 0; i < 10; i++) {
+	                String hex = Integer.toHexString(0xff & hash[i]);
+	                if(hex.length() == 1) hexString.append('0');
+	                hexString.append(hex);
+	            }
+	 
+	            //출력
+	            System.out.println(hexString.toString());
+	 
+	        } catch(Exception ex){
+	            throw new RuntimeException(ex);
+	        }
+	 
+	}
+	
+	@Test
+	public void BCrypts(){
+		// 사용자의 비밀번호
+		String password = "!@#$password1234";
+
+		// create hash , passwordHashed is 60byte. gensalt default value 10
+		String passwordHashed = BCrypt.hashpw(password, BCrypt.gensalt());
+		// if password hash value equals passwordHashed  true / else false
+		boolean isValidPassword = BCrypt.checkpw(password, passwordHashed);
+		
+		System.out.println(passwordHashed);
+		
+	}
+	
+}

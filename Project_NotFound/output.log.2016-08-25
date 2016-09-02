@@ -1,0 +1,5 @@
+2016-08-25 22:53:22,979 INFO  [main] db.DB_inp         (  DB_inp.java:48)     - 2016-08-25 22:53:22.978 :: com.mysql.jdbc.JDBC4PreparedStatement@3c5a99da: delete from user;
+2016-08-25 22:53:23,036 INFO  [main] db.DB_inp         (  DB_inp.java:48)     - 2016-08-25 22:53:23.036 :: com.mysql.jdbc.JDBC4PreparedStatement@3f0ee7cb: insert into user values('lus','pass','name');
+2016-08-25 22:53:23,096 INFO  [main] db.DB_inp         (  DB_inp.java:107)     - 2016-08-25 22:53:23.096 :: select * from user where email ='te'
+2016-08-25 22:53:23,167 INFO  [main] db.DB_inp         (  DB_inp.java:48)     - 2016-08-25 22:53:23.167 :: com.mysql.jdbc.JDBC4PreparedStatement@39ba5a14: delete from user;
+2016-08-25 22:53:23,219 INFO  [main] db.DB_inp         (  DB_inp.java:48)     - 2016-08-25 22:53:23.219 :: com.mysql.jdbc.JDBC4PreparedStatement@19dfb72a: insert into user values('lus','pass','name');

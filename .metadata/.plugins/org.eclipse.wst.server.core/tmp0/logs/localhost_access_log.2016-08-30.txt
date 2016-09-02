@@ -398,3 +398,5 @@
 0:0:0:0:0:0:0:1 - - [30/Aug/2016:11:40:24 +0900] "GET /NotFound/view/img/ipad.png HTTP/1.1" 404 1046
 0:0:0:0:0:0:0:1 - - [30/Aug/2016:11:40:24 +0900] "GET /NotFound/resources/img/intro.jpg HTTP/1.1" 200 419446
 0:0:0:0:0:0:0:1 - - [30/Aug/2016:11:40:24 +0900] "GET /NotFound/resources/img/banner-bg.jpg HTTP/1.1" 304 -
+127.0.0.1 - - [30/Aug/2016:22:39:47 +0900] "GET / HTTP/1.1" 404 994
+0:0:0:0:0:0:0:1 - - [30/Aug/2016:22:39:48 +0900] "GET /NotFound/WEB-INF/classes/test/Index_DBTest.java HTTP/1.1" 404 992

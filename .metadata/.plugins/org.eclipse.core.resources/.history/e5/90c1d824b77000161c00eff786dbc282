@@ -1,0 +1,15 @@
+/**
+ * 
+ */
+function submit() {
+	var form = document.login;
+	form.submit();
+}
+
+function f_join(){
+	var loginform = document.login;
+	var joinform = document.join;
+	loginform.style.display = 'none';
+	joinform.style.display = 'block';	
+	
+}

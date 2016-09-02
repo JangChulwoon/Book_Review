@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.mindrot.jbcrypt.BCrypt;
 
 import bean.User;
 import dao.UserDao;
+import sha.SHA;
 
 /**
  * Servlet implementation class IndexController
@@ -42,11 +43,11 @@ public class IndexController extends HttpServlet {
 		String action = request.getParameter("action");
 		UserDao userdao = new UserDao();
 		if (action == null || action.length() == 0) {
-			// ���⼭ �ڷ� ���°� �ƴ϶� ������������ ���� ���� �������� ������ ..
 			userdao.jsback(response);
 		} else if (action.equals("join")) {
-			User user = new User(request.getParameter("joinid"), request.getParameter("joinpass"),
-					request.getParameter("joinname"));
+			String pass  = request.getParameter("joinpass");
+			String bcr_pass = BCrypt.hashpw(pass, BCrypt.gensalt());
+			User user = new User(request.getParameter("joinid"), bcr_pass, request.getParameter("joinname"));
 			userdao.user_insert(user);
 			input_Session(request, request.getParameter("joinid"), request.getParameter("joinname"));
 			response.sendRedirect("/NotFound/main.do");
@@ -55,7 +56,9 @@ public class IndexController extends HttpServlet {
 			String email = request.getParameter("userid");
 			String pass = request.getParameter("userpd");
 			list = userdao.user_login(email);
-			if (list.size() != 0 && list.get(0).get("pass").equals(pass)) {
+			boolean passcheck =  BCrypt.checkpw(pass,list.get(0).get("pass"));
+			
+			if (list.size() != 0 && passcheck) {
 				input_Session(request, email, list.get(0).get("name"));
 				logger.info("login info" + list.get(0));
 				response.sendRedirect("/NotFound/main.do");

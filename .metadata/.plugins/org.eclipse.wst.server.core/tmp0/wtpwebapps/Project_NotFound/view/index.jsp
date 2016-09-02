@@ -70,7 +70,7 @@
 						<h1>Book Clip</h1>
 						<h3>보고있는 책을 기록해보세요</h3>
 						<hr class="intro-divider">
-						
+						<!--  로그인 form -->
 						<form class="form-horizontal" action="/NotFound/index.do" method="post" name ="login">
 							<input type="hidden" name="action" value="login">
 							<ul class="list-inline intro-social-buttons">
@@ -94,13 +94,59 @@
 										<i class="fa fa-play fa-fw"></i> 
 										<span class="network-name">Login</span>
 									</a>
-									<a href="#" class="btn btn-default btn-lg box_size">
+									<a onclick="f_join()" class="btn btn-default btn-lg box_size">
 											<i class="fa fa-cog fa-fw"></i> 
 											<span class="network-name">Join</span>
 									</a>
 									<a onclick="checkLoginState();" class="btn btn-default btn-lg box_size">
 										<i class="fa fa-facebook fa-fw"></i> 
 										<span class="network-name">Facebook</span>
+									</a>
+								</li>
+							</ul>
+						</form>
+						
+						<!--  회원가입 form -->
+						
+						<form class="form-horizontal joinform" action="/NotFound/index.do" method="post" name = "join">
+							<input type="hidden" name="action" value="join">
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<div class="col-sm-14">
+										<input type="text"  name=joinid class="form-control" placeholder="ID" style="min-width: 20em;">
+									</div>
+								
+								</li>
+								
+							</ul>
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<div class="col-lg-14">
+										<input type="password"  name="joinpass" class="form-control" placeholder="PW" style="min-width: 20em;">
+									</div>
+								</li>
+							</ul>
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<div class="col-lg-14">
+										<input type="text"  name="joinname" class="form-control" placeholder="Name" style="min-width: 20em;">
+									</div>
+								</li>
+							</ul>
+							<br>
+							<ul class="list-inline intro-social-buttons">
+								<li>
+									<a onclick="f_idcheck" class="btn btn-default btn-lg box_size">
+											<i class="fa fa-check fa-fw"></i> 
+											<span class="network-name">Check</span>
+									</a>
+									<a onclick="f_jsubmit()" class="btn btn-default btn-lg box_size joinbtn">
+											<i class="fa fa-cog fa-fw"></i> 
+											<span class="network-name">Join</span>
+									</a>
+									<a onclick="f_join()" class="btn btn-default btn-lg box_size">
+										<i class="fa fa-times fa-fw"></i> 
+										<span class="network-name">Cancel</span>
 									</a>
 								</li>
 							</ul>
