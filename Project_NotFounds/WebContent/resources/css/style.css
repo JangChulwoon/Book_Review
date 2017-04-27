@@ -1,0 +1,18 @@
+
+.box_size{
+	min-width: 5em;
+}
+
+	.modal-body{
+		text-align : center;		
+	}
+
+	.join-input{
+		text-align: left;
+	}
+	
+	.join-input > .join-span{
+		margin-left: 5px;
+	}
+	
+	

@@ -1,0 +1,134 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import bean.Clip;
+import db.DB_TemUpdate;
+import db.DB_inp;
+
+public class ClipDao {
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	private DB_inp dbset = null;
+	static Logger logger = Logger.getLogger(ClipDao.class);
+
+	public ClipDao() {
+		this.dbset = new DB_inp();
+	}
+
+	private String getTimeStamp() {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return f.format(new Date());
+	}
+
+
+
+	
+
+/*	public void Board_Update(Clip board, String num) {
+		StringBuilder stb = new StringBuilder(
+				"update board set subject= ?, writer= ?, contents=?, reg_date=?, bookname=?, author=?, publisher=?, publication_date=?, book_img=?, description=? where num =");
+		stb.append("'").append(num).append("';");
+		Bupdate(stb.toString(), board);
+	}
+
+	*/
+
+	public void insert(Clip clip, final String id) {
+		clipInsertCallback(clip, "INSERT INTO clip (id,title,state,date) VALUES (?,?,?,now());",id);
+	}
+	
+	
+
+	public List<Map<String, String>> boarder_count() {
+		String sql = "SELECT count(*) as size FROM board;";
+		return dbset.getList(sql);
+	}
+
+	public void Board_Delete(String num) {
+		StringBuilder stb = new StringBuilder("DELETE from board where num =");
+		stb.append("'").append(num).append("';");
+		delete(stb.toString());
+	}
+
+
+	private void delete(final String query) {
+		DB_TemUpdate db_tmp = new DB_TemUpdate() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException {
+				PreparedStatement pstmt = conn.prepareStatement(query);
+				return pstmt;
+			}
+		};
+		dbset.Template_Update(dbset.dbinit(), db_tmp);
+	}
+
+/*	private void Bupdate(final String query, Clip board) {
+		DB_TemUpdate temp = new DB_TemUpdate() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
+				PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setString(1, board.getSubject());
+				pstmt.setString(2, board.getWriter());
+				pstmt.setString(3, board.getContents());
+				pstmt.setString(4, getTimeStamp());
+				pstmt.setString(5, board.getBookname());
+				pstmt.setString(6, board.getAuthor());
+				pstmt.setString(7, board.getPublisher());
+				pstmt.setString(8, board.getPublication_date());
+				pstmt.setString(9, board.getBook_img());
+				pstmt.setString(10, board.getDescription());
+				return pstmt;
+			}
+		};
+		dbset.Template_Update(dbset.dbinit(), temp);
+	}
+*/
+	
+
+	private void clipInsertCallback(Clip clip, final String query, final String id) {
+		DB_TemUpdate temp = new DB_TemUpdate() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
+				// TODO Auto-generated method stub
+				PreparedStatement pstmt = con.prepareStatement(query);
+				pstmt.setString(1, id);
+				pstmt.setString(2, clip.getBook_name());
+				pstmt.setString(3, clip.getState());
+				logger.info("insert query"+pstmt.toString());
+				return pstmt;
+			}
+		};
+		dbset.Template_Update(dbset.dbinit(), temp);
+	}
+
+	public List<Map<String, String>> getBoardCount_search(String keyword, String key) {
+		StringBuilder str = new StringBuilder("SELECT  count(*) as size FROM board where ");
+		str.append(keyword).append(" like '%").append(key).append("%';");
+		return dbset.getList(str.toString());
+	}
+
+	public List<Map<String, String>> selectList(final String id) {
+		StringBuilder str = new StringBuilder("SELECT * FROM clip where id = ").append("\'").append(id).append("\'");
+		return dbset.getList(str.toString());
+	}
+
+	public List<Map<String, String>> boarder_SearchDB(String keyword, String key, int start) {
+		StringBuilder str = new StringBuilder(
+				"SELECT *,convert(description using utf8) as descriptions FROM board where ");
+		str.append(keyword).append(" like '%").append(key).append("%' order by num desc limit ").append(start)
+				.append(",10;");
+		logger.info(str);
+		return dbset.getList(str.toString());
+	}
+
+}

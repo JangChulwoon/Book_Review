@@ -1,0 +1,239 @@
+	h1,h2 {
+		text-align : center;
+	}
+
+
+    body{
+        margin : 0px;    
+        width: 100%;
+    }
+    
+    p{
+    	margin: 0px;
+    }
+    
+    td , th {
+    	text-align : center;
+    }
+
+    .book-btn{
+       text-align: right;
+	   margin-right: 10rem;
+	   margin-bottom: 10px;
+    }
+    
+    .wrap{
+        position: relative;
+    	top: -100px;
+        text-align: center;
+    }
+    
+    .title{
+        position: relative;
+        margin-top: 0px;
+        padding: 0 0 7px;
+        max-width: 98px !important;
+        top: 100px;
+        z-index: 50;
+    }
+    
+    .logo_img {
+    
+	    margin-top: 5px;
+	    max-width: 65%;
+	}
+
+    .teaser {
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+        background-color: #000;
+    }
+    
+    .teaser_img{
+        
+        transform: translate3d(0px, 0px, 0px);
+        opacity: 0.5;
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        
+    }
+    
+    a{
+    	cursor: pointer;
+    }
+    
+    .user_header{
+        width: 100%;
+        max-width: 640px;
+        margin: 0 auto;
+        position: relative;
+        padding: 0;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+    
+    .user_img {
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        top: -95px;
+        right: 45%;
+        margin-right: -60px;
+        background-size: cover;
+        border-radius: 50%;
+        z-index: 100;
+        border: 2px solid #bbb7b6;
+        background-color: #fff;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    }
+    
+    .user_title{
+        margin: 0;
+        padding: 120px 16px 0px 0px;
+        font-size: 40px;
+        font-weight: 600;
+        letter-spacing: -1px;
+        outline: 0;
+        line-height: 50px;
+        word-break: break-word;
+        color: #333;
+    }
+    
+    .user_subtitle{
+        margin: 0px;
+        padding: 0 16 0 0px;
+        font-size: 20px;
+        line-height: 1.5;
+        color: #666;
+        font-weight: 400;
+    }
+    
+    .user_sns{
+        
+        padding: 15px 0 25px;
+        color: black;
+    }
+    
+     .user_sns a{
+        color: gray;
+    }
+    
+    .user_sns a:hover{
+        color: red;
+    }
+    
+    .user_paly{
+    	padding: 0px 0 25px;
+    	border-bottom: 1px solid #bbbbbb;
+    }
+    
+    .user_paly a{
+    	color: #fd6a6a;
+    	text-decoration: none;
+    }
+    
+    .user_start a:hover{
+        color: red;
+    }
+    
+    .contents{
+        width: 100%;
+        max-width: 640px;
+        margin : 50px auto;
+        padding-bottom:  20px;
+        border-bottom: 1px solid #bbbbbb;
+    }
+    
+    .line{
+        margin : 50px  auto;
+    }
+    
+    .list > a {
+         text-decoration:none;
+        color: black;
+        border-bottom: none;
+        display: block;
+        width: 100%;
+        margin: 0 0 1em 0;
+        text-align: center;
+        border-radius: 4px;
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+        background-color: whitesmoke;
+        cursor: pointer;
+        outline: 0;
+        overflow: hidden;
+
+    }
+    
+    
+     .list > a:hover{
+        
+        box-shadow: inset 0 0 0 2px rgba(224, 80, 80, 0.25);
+     }
+     
+     .music_fonts{
+	    
+	    line-height: 1.5;
+	    color: #666;
+	    text-align: center;
+	    font-weight: 600;
+	}
+
+	.music_name{
+		width: 300px !important;
+		text-align: center;
+		padding: 0 10px 0 10px
+	}
+	
+	.perform_contents{
+		font-size: 13px;
+	}
+	.music_icon{
+	    padding-left: 15px;
+		text-align: center;
+	}
+
+	.music_singer{
+	    width: 100px !important;
+		font-size: 15px;
+	    line-height: 1.5;
+	    color: #666;
+	    text-align: center;
+	    font-weight: 400;
+		padding: 0 10px 0 10px
+	}
+	
+	.music_request{
+		min-width: 100px;
+	}
+	
+	.user_backimg{
+		position: absolute; 
+		right: 5%; 
+		bottom: 5%; 
+		width : 25%
+	
+	}
+	
+	.user_backimg > .back_img{
+	  	margin: 0.2rem auto;
+        font-size: 12pt;
+        font-weight: 400;
+        line-height: 1.65;
+        border-radius: 10px;
+        border: none;
+        border: solid 2px white;
+        cursor: pointer;
+        display: block;
+        outline: 0;
+        text-decoration: none;
+        width: 30%;
+        height: 2rem;
+    }
