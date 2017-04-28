@@ -278,28 +278,16 @@
       </div>
       <!-- body -->
       <div class="modal-body">
+      	<div class = "memo-reple">
+	      	<ul class="list-inline intro-social-buttons memo">
+				<li class = "memo-contents">
+					
+				</li>
+			</ul>
+		</div>
 		<form class="form-horizontal joinform" id = "memo-form" action="/NotFound/main.do" method="post">
 			<input type="hidden" name="action" value="memo">
-			<input type="hidden"  name="index" >
-			<c:choose>
-				<c:when test="${fn:length(clip) == 0}">
-					<ul class="list-inline intro-social-buttons">
-						<li>
-							책에 대한 메모를 남길 수 있습니다.
-						</li>
-					</ul>
-				</c:when>
-				<c:otherwise>
-					<c:forEach var="i" begin="0" end="${fn:length(clip)-1}" step="1">
-						<ul class="list-inline intro-social-buttons">
-							<li>
-								${clip[i].title}
-							</li>
-						</ul>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-			
+			<input type="hidden"  name="index" >	
 			<ul class="list-inline intro-social-buttons">
 				<li>
 					<div class="col-lg-14 join-input">
@@ -386,9 +374,35 @@
 	    //seleted-book
 	    //bookTitle
 	    $(".bookTitle").on("click",function(){
+	    	var index = $(this).data('index');
 	    	$("#seleted-book").text($(this).text());
-	    	$("input[name=index]").attr("value",$(this).data('index'));
-	    	console.log($("input[name=index]").attr('value'));
+	    	$("input[name=index]").attr("value",index);
+	    	$(".memo > .memo-contents").remove();
+	    	// ajax로 가쟈오는 부분
+	        $.ajax({
+                type: 'get',
+                url: "memo.do?num="+index,
+                dataType: "json",
+                success: function(data) {
+                	if(data.length == 0){
+                		$(".memo-reple").append('<ul class="list-inline intro-social-buttons memo">'
+            					+'<li class = "memo-contents">책에 대한 메모를 남길 수 있습니다.</li>'
+            				+'</ul>');
+                	}else{
+                		for(obj in data){
+                			$(".memo-reple").append('<ul class="list-inline intro-social-buttons memo">'
+                					+'<li class = "memo-contents">'
+                						+data[0].content 
+                					+'</li>'
+                					+'<li class = "memo-contents">'
+                						+data[0].date 
+                					+'</li>'
+                				+'</ul>');
+                		}
+                	}
+                }
+           });
+	    	
 	    });
 	});
 	</script>

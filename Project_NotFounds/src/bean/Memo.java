@@ -6,6 +6,8 @@ public class Memo {
 	private String context;
 	private String date;
 
+
+
 	public Memo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -49,6 +51,13 @@ public class Memo {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+	
+	@Override
+	public String toString() {
+		return "{ \'num\' : \'" + num + "\' , \'id\' : \'"
+		 + id + "\' , \'context\' : \'" + context + "\', \'date\' : \'" 
+		 + date + "\'}";
 	}
 
 }
