@@ -24,7 +24,6 @@ import db.DB_inp;
 /**
  * Servlet implementation class MainController
  */
-@WebServlet("/MainController")
 public class MainController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Logger logger = Logger.getLogger(MainController.class);
@@ -87,10 +86,7 @@ public class MainController extends HttpServlet {
 			response.sendRedirect("/NotFound/main.do");
 		} else if ("board_update".equals(action)) {
 			response.sendRedirect("/NotFound/main.do");
-		} else if ("board_delete".equals(action)) {
-			boarderDao.Board_Delete(request.getParameter("num"));
-			response.sendRedirect("/NotFound/main.do");
-		} else if ("search".equals(action)) {
+		}  else if ("search".equals(action)) {
 			String keyword = request.getParameter("search_value");
 			String key = request.getParameter("search_key");
 			String current_page = request.getParameter("current_page");

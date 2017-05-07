@@ -37,13 +37,14 @@ public class DB_inp {
 		}
 		return conn;
 	}
-	public void Template_Update(Connection conn, DB_TemUpdate temp) {
+	public boolean Template_Update(Connection conn, DB_TemUpdate temp) {
 		PreparedStatement pstmt = null;
 		try {
 			pstmt = temp.QueryTemplate(conn);
 			pstmt.executeUpdate(); 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		} finally {
 			logger.info(new Timestamp(System.currentTimeMillis()) + " :: " + pstmt);
 			try {
@@ -58,6 +59,7 @@ public class DB_inp {
 				e.printStackTrace();
 			}
 		}
+		return true;
 	}
 
 	private List<Map<String, String>> Template_Query(Connection conn, DB_TemQuery temp) {

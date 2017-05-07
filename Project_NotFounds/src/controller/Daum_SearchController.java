@@ -18,7 +18,6 @@ import api_daum.SearchApi;
 /**
  * Servlet implementation class Daum_SearchController
  */
-@WebServlet("/Daum_SearchController")
 public class Daum_SearchController extends HttpServlet {
 	static Logger logger = Logger.getLogger(Daum_SearchController.class);
 	private static final long serialVersionUID = 1L;

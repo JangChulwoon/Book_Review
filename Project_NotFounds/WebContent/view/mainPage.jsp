@@ -10,7 +10,6 @@
 
 <title>BookClip</title>
 
-
 <!-- Bootstrap Core CSS -->
 <link href="/NotFound/resources/css/bootstrap.min.css" rel="stylesheet">
 
@@ -30,8 +29,6 @@
 <link href="/NotFound/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
 
-
-
 </head>
 <body>
 	<!-- Navigation -->
@@ -40,12 +37,7 @@
 		<div class="container topnav">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span> 
-					<span class="icon-bar"></span> 
-					<span class="icon-bar"></span> 
-					<span class="icon-bar"></span>
-				</button>
+				
 				<a class="navbar-brand topnav" href="./">BookClip</a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -87,13 +79,14 @@
 					<table class="table table-hover">
 						<tr>
 							<th width="50%" scope="col">책제목</th>
-							<th width="25%" scope="col">상태</th>
-							<th width="25%" scope="col">날짜</th>
+							<th width="20%" scope="col">상태</th>
+							<th width="20%" scope="col">날짜</th>
+							<th width="10%" scope="col">비고</th>
 						</tr>
 						<c:choose>
 							<c:when test="${fn:length(clip) == 0}">
 								<tr>
-									<td colspan="3">
+									<td colspan="4">
 										<p>읽고싶은, 읽고있는, 읽은 책을 기록하세요.</p>
 									</td>
 								</tr>
@@ -101,10 +94,14 @@
 							<c:otherwise>
 								<c:forEach var="i" begin="0" end="${fn:length(clip)-1}"
 									step="1">
-									<tr>
-										<td align="center"><a class = "bookTitle" data-target="#memo-modal" data-toggle="modal" data-index = '${clip[i].idx}'>${clip[i].title}</a></td>
+									<tr  data-index = '${clip[i].idx}'>
+										<td align="center"><a class = "bookTitle" data-target="#memo-modal" data-toggle="modal">${clip[i].title}</a></td>
 										<td align="center">${clip[i].state}</td>
 										<td align="center">${clip[i].date}</td>
+										<td align="center">
+										  <button type="button" class="btn btn-warning btn-xs edit">수정</button>
+                            			  <button type="button" class="btn btn-default btn-xs remove">삭제</button>
+										</td>
 									</tr>
 								</c:forEach>
 							</c:otherwise>
@@ -285,8 +282,8 @@
 				</li>
 			</ul>
 		</div>
-		<form class="form-horizontal joinform" id = "memo-form" action="/NotFound/main.do" method="post">
-			<input type="hidden" name="action" value="memo">
+		<form class="form-horizontal joinform" id = "memo-form">
+			<input type="hidden" name="action" value="">
 			<input type="hidden"  name="index" >	
 			<ul class="list-inline intro-social-buttons">
 				<li>
@@ -321,7 +318,61 @@
 	<script src="/NotFound/resources/js/bootstrap.min.js"></script>
 	
 	<script>
+	
+	function getDate(){
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1; //January is 0!
+		var yyyy = today.getFullYear();
+
+		if(dd<10) {
+		    dd='0'+dd
+		} 
+
+		if(mm<10) {
+		    mm='0'+mm
+		} 
+
+		return today = yyyy+'-'+mm+'-'+dd;
+	}
+	
 	$(function(){
+		
+		// book 수정 
+		
+		$(".remove").on("click",function(){
+			var tr= $(this).closest('tr');
+			var index =tr.data('index');
+		
+			var allData = { "index": index ,"action" : "delete"};
+			if(confirm("정말 삭제하시겠습니까?")){
+				$.ajax({
+	                type: 'get',
+	                url: "memo.do",
+	                data: allData,
+	                success: function(msg) {
+	                
+	               	if(msg.data == 'ok'){
+	               		// 삭제후 reload
+	               	 	alert("삭제되었습니다.");
+	               	 	location.reload();
+	               	}else{
+	               	 	alert("에러가 발생하였습니다.");
+	               	}
+	               
+	                }, error:function(request,status,error){
+	                   alert("에러가 발생하였습니다.");
+	                }
+
+	           });	
+			}
+			
+			
+			
+		});
+		
+		
+		
 		// 북 제목 입력시 record 버튼 활성화
 		$("#book_title").keyup(function(){
 			if($("#book_title").val() !=''){
@@ -366,24 +417,60 @@
 	    	
 	    });
 	    
-	    // submit memo
+	    // ajax를 통해 insert .
+	    
 	    $("#memo-record").on("click",function(){
-	    	$('#memo-form').submit();
+	    	$("input[name=action]").attr("value","insert");
+	    	var formData = $("#memo-form").serialize();
+	    	$.ajax({
+                type: 'POST',
+                url: "memo.do",
+                data: formData,
+                success: function(msg) {
+                
+                	console.log(msg);
+                	if(msg.data == 'ok'){
+                		// input 값을 초기화
+                		alert("등록되었습니다.");
+                		$(".memo-reple").append(
+               				'<ul class="list-inline intro-social-buttons memo">'
+            					+'<li class = "memo-contents">'
+            						+	$("#memo").val()
+            					+'</li>'
+            					+'<li class = "memo-contents">'
+            						+ getDate()
+            					+'</li>'
+            				+'</ul>');
+                		$("#memo").val("");
+                	}else {
+                		
+                	}
+               
+                }, error:function(request,status,error){
+                   alert("에러가 발생하였습니다.");
+                }
+
+           });
 	    });
 	    
 	    //seleted-book
 	    //bookTitle
 	    $(".bookTitle").on("click",function(){
-	    	var index = $(this).data('index');
+	    	var tr= $(this).closest('tr');
+			var index =tr.data('index');
+	    	// 책 제목을 가져와 보여준다.
 	    	$("#seleted-book").text($(this).text());
+	    	// index 정보를 설정한다.
 	    	$("input[name=index]").attr("value",index);
+	    	// 그전에 적용된 memo 부분을 삭제한다.
 	    	$(".memo > .memo-contents").remove();
 	    	// ajax로 가쟈오는 부분
 	        $.ajax({
                 type: 'get',
-                url: "memo.do?num="+index,
+                url: "memo.do?num="+index+"&action=select",
                 dataType: "json",
                 success: function(data) {
+                	
                 	if(data.length == 0){
                 		$(".memo-reple").append('<ul class="list-inline intro-social-buttons memo">'
             					+'<li class = "memo-contents">책에 대한 메모를 남길 수 있습니다.</li>'
@@ -392,14 +479,18 @@
                 		for(obj in data){
                 			$(".memo-reple").append('<ul class="list-inline intro-social-buttons memo">'
                 					+'<li class = "memo-contents">'
-                						+data[0].content 
+                						+data[obj].content 
                 					+'</li>'
                 					+'<li class = "memo-contents">'
-                						+data[0].date 
+                						+data[obj].date 
                 					+'</li>'
                 				+'</ul>');
                 		}
                 	}
+                },
+                erorr : function(xhr, status,err){
+                	console.log(err);
+                	
                 }
            });
 	    	

@@ -54,23 +54,28 @@ public class ClipDao {
 		return dbset.getList(sql);
 	}
 
-	public void Board_Delete(String num) {
-		StringBuilder stb = new StringBuilder("DELETE from board where num =");
-		stb.append("'").append(num).append("';");
-		delete(stb.toString());
+	// delete ºÎºÐ
+	public boolean delete(final int idx,final String id){
+		String query ="DELETE FROM clip WHERE idx = ? and id = ?";
+		return ClipDeleteCallBack(query,idx,id);
 	}
 
-
-	private void delete(final String query) {
+	private boolean ClipDeleteCallBack(final String query,final int idx,final String id) {
 		DB_TemUpdate db_tmp = new DB_TemUpdate() {
 			@Override
 			public PreparedStatement QueryTemplate(Connection conn) throws SQLException {
 				PreparedStatement pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, idx);
+				pstmt.setString(2, id);
 				return pstmt;
 			}
 		};
-		dbset.Template_Update(dbset.dbinit(), db_tmp);
+		return dbset.Template_Update(dbset.dbinit(), db_tmp);
 	}
+
+
+
+
 
 /*	private void Bupdate(final String query, Clip board) {
 		DB_TemUpdate temp = new DB_TemUpdate() {

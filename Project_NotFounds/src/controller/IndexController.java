@@ -23,7 +23,7 @@ import sha.SHA;
  */
 public class IndexController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static Logger logger = Logger.getLogger(IndexController.class);
+	static Logger log = Logger.getLogger(IndexController.class);
 
 	public IndexController() {
 		super();
@@ -33,17 +33,29 @@ public class IndexController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher rd = request.getRequestDispatcher("/view/index.jsp");
-		rd.forward(request, response);
+		HttpSession session = request.getSession();
+		String action = request.getParameter("action");
+		
+		if (action == null || action.length() == 0) {
+			RequestDispatcher rd = request.getRequestDispatcher("/view/index.jsp");
+			rd.forward(request, response);
+		}else if ("facebook".equals(action)) {
+			input_Session(request, request.getParameter("email"), request.getParameter("name"));
+			response.sendRedirect("/NotFound/main.do");
+		}else if ("logout".equals(action)) {
+			session.invalidate();
+			response.sendRedirect("/NotFound/view/index.jsp");
+		} 
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		List<Map<String, String>> list = null;
-		HttpSession session = request.getSession();
 		String action = request.getParameter("action");
 		UserDao userdao = new UserDao();
+	
 		if (action == null || action.length() == 0) {
 			userdao.jsback(response);
 		} else if (action.equals("join")) {
@@ -62,18 +74,12 @@ public class IndexController extends HttpServlet {
 			
 			if (list.size() != 0 && passcheck) {
 				input_Session(request, email, list.get(0).get("name"));
-				logger.info("login info" + list.get(0));
+				log.info("login info" + list.get(0));
 				response.sendRedirect("/NotFound/main.do");
 			} else {
 				userdao.jsback(response);
 			}
-		} else if (action.equals("facebook")) {
-			input_Session(request, request.getParameter("email"), request.getParameter("name"));
-			response.sendRedirect("/NotFound/main.do");
-		} else if ("logout".equals(action)) {
-			session.invalidate();
-			response.sendRedirect("/NotFound/view/index.jsp");
-		} else {
+		}  else {
 			userdao.jsback(response);
 		}
 	}

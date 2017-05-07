@@ -20,7 +20,7 @@ import filter.LoginCheck;
 /**
  * Servlet implementation class JoinController
  */
-@WebServlet("/JoinController")
+
 public class IdcheckController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static Logger logger = Logger.getLogger(IdcheckController.class);

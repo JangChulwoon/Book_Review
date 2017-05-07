@@ -21,12 +21,13 @@ public class MemoDao {
 		this.dbset = new DB_inp();
 	}
 
+	//insert 부분 
 	
-	public void insert(final Memo memo) {
-		MemoInsertCallBack(memo, "INSERT INTO memo (id,content,date,num) VALUES (?,?,now(),?);");
+	public boolean insert(final Memo memo) {
+		return MemoInsertCallBack(memo, "INSERT INTO memo (id,content,date,num) VALUES (?,?,now(),?);");
 	}
 
-	private void MemoInsertCallBack(final Memo memo, final String query) {
+	private boolean MemoInsertCallBack(final Memo memo, final String query) {
 		DB_TemUpdate temp = new DB_TemUpdate() {
 			@Override
 			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
@@ -39,13 +40,32 @@ public class MemoDao {
 				return pstmt;
 			}
 		};
-		dbset.Template_Update(dbset.dbinit(), temp);
+		return dbset.Template_Update(dbset.dbinit(), temp);
 	}
 	
+	// Select list 부분 
 	public List<Map<String, String>> selectList(final String id,final int num) {
 		StringBuilder str = new StringBuilder("SELECT * FROM memo where id = ").append("\'").
 				append(id).append("\'").append("and num = ").append(num);
 		return dbset.getList(str.toString());
 	}
 
+	
+	
+	public boolean delete(final int idx){
+		String query ="DELETE FROM memo WHERE num = ?";
+		return MemoDeleteCallBack(query,idx);
+	}
+
+	private boolean MemoDeleteCallBack(final String query,final int idx) {
+		DB_TemUpdate db_tmp = new DB_TemUpdate() {
+			@Override
+			public PreparedStatement QueryTemplate(Connection conn) throws SQLException {
+				PreparedStatement pstmt = conn.prepareStatement(query);
+				pstmt.setInt(1, idx);
+				return pstmt;
+			}
+		};
+		return dbset.Template_Update(dbset.dbinit(), db_tmp);
+	}
 }
