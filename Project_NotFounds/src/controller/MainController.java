@@ -84,7 +84,10 @@ public class MainController extends HttpServlet {
 			memo = new Memo(idx, id, memo_text);
 			memodao.insert(memo);
 			response.sendRedirect("/NotFound/main.do");
-		} else if ("board_update".equals(action)) {
+		} else if ("update".equals(action)) {
+			clip = new Clip(request.getParameter("book_title"),request.getParameter("state"));
+			idx = Integer.parseInt(request.getParameter("index"));
+			dao.update(clip, id,idx);
 			response.sendRedirect("/NotFound/main.do");
 		}  else if ("search".equals(action)) {
 			String keyword = request.getParameter("search_value");

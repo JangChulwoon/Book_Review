@@ -12,8 +12,6 @@ public class Clip {
 	}
 	
 	
-	
-	
 	public Clip(String book_name,  String state) {
 		super();
 		this.book_name = book_name;
@@ -21,22 +19,20 @@ public class Clip {
 	}
 
 
-
-
 	public String getBook_name() {
 		return book_name;
 	}
+	
 	public void setBook_name(String book_name) {
 		this.book_name = book_name;
 	}
+	
 	public String getState() {
 		return state;
 	}
+	
 	public void setState(String state) {
 		this.state = state;
 	}
-
-			
-	
 	
 }

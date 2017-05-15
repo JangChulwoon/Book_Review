@@ -72,7 +72,7 @@
 	<div class="content-section-a">
 		<div class="container">
 			<div class = "book-btn">
-				<a class="btn btn-default"  data-target="#layerpop" data-toggle="modal">책 등록</a>
+				<a class="btn btn-default" id = "enroll_book" data-target="#layerpop" data-toggle="modal">책 등록</a>
 			</div>
 			<div class="row">
 				<div class="col-lg-12  col-lg-offset-1">
@@ -99,7 +99,7 @@
 										<td align="center">${clip[i].state}</td>
 										<td align="center">${clip[i].date}</td>
 										<td align="center">
-										  <button type="button" class="btn btn-warning btn-xs edit">수정</button>
+										  <button type="button" class="btn btn-warning btn-xs edit" data-target="#layerpop" data-toggle="modal">수정</button>
                             			  <button type="button" class="btn btn-default btn-xs remove">삭제</button>
 										</td>
 									</tr>
@@ -225,14 +225,15 @@
       <div class="modal-body">
 		<form class="form-horizontal joinform" id = "book-form" action="/NotFound/main.do" method="post">
 			<input type="hidden" name="action" value="record">
+			<input type="hidden" name="index" value="">
 			<ul class="list-inline intro-social-buttons">
 				<li>
 					<div class="col-sm-14 join-input">
 						<div class = "join-span">
 							<span>state : </span>
 						</div>
-						<select class="form-control" style="min-width: 20em;" name = "state">
-							<option selected="selected">상태를 선택해주세요</option>
+						<select class="form-control" style="min-width: 20em;" name = "state" id = "enroll_state">
+							<option value = "default" selected="selected">상태를 선택해주세요</option>
 							<option value = "HOPE">읽고싶은 책 </option>
 							<option value = "ING">읽고 있는 책 </option>
 							<option value = "END">다 읽은 책 </option>
@@ -310,6 +311,7 @@
 </div>
 
 
+
 	<!--  jquery-->
 	<script src="//code.jquery.com/jquery.min.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
@@ -338,12 +340,24 @@
 	
 	$(function(){
 		
-		// book 수정 
-		
+		// book 수정
+		$(".edit").on("click",function(){
+			var tr= $(this).closest('tr');
+			var index =tr.data('index');
+			var state = $(this).closest('tr').children().eq(1).text();
+			$("#book-form > input[name=action]").attr("value","update");
+			$("#book_title").val($(this).closest('tr').children().eq(0).text());
+			$('#enroll_state option[value='+state+']').attr('selected', 'selected');
+			$("#book-form > input[name=index]").attr("value",index);
+			
+		});
+	
+		 
+		// book 삭제
 		$(".remove").on("click",function(){
 			var tr= $(this).closest('tr');
 			var index =tr.data('index');
-		
+			
 			var allData = { "index": index ,"action" : "delete"};
 			if(confirm("정말 삭제하시겠습니까?")){
 				$.ajax({
@@ -363,12 +377,8 @@
 	                }, error:function(request,status,error){
 	                   alert("에러가 발생하였습니다.");
 	                }
-
 	           });	
 			}
-			
-			
-			
 		});
 		
 		

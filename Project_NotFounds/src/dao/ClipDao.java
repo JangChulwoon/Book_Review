@@ -47,7 +47,9 @@ public class ClipDao {
 		clipInsertCallback(clip, "INSERT INTO clip (id,title,state,date) VALUES (?,?,?,now());",id);
 	}
 	
-	
+	public void update(Clip clip, final String id,final int idx) {
+		clipUpdateCallback(clip, "update clip set title = ? , state = ? where id = ? and idx = ?",id,idx);
+	}
 
 	public List<Map<String, String>> boarder_count() {
 		String sql = "SELECT count(*) as size FROM board;";
@@ -74,30 +76,21 @@ public class ClipDao {
 	}
 
 
-
-
-
-/*	private void Bupdate(final String query, Clip board) {
+	private void clipUpdateCallback(Clip clip,final String query,final String id,final int idx) {
 		DB_TemUpdate temp = new DB_TemUpdate() {
 			@Override
 			public PreparedStatement QueryTemplate(Connection con) throws SQLException {
 				PreparedStatement pstmt = con.prepareStatement(query);
-				pstmt.setString(1, board.getSubject());
-				pstmt.setString(2, board.getWriter());
-				pstmt.setString(3, board.getContents());
-				pstmt.setString(4, getTimeStamp());
-				pstmt.setString(5, board.getBookname());
-				pstmt.setString(6, board.getAuthor());
-				pstmt.setString(7, board.getPublisher());
-				pstmt.setString(8, board.getPublication_date());
-				pstmt.setString(9, board.getBook_img());
-				pstmt.setString(10, board.getDescription());
+				pstmt.setString(1, clip.getBook_name());
+				pstmt.setString(2, clip.getState());
+				pstmt.setString(3, id);
+				pstmt.setInt(4, idx);
 				return pstmt;
 			}
 		};
 		dbset.Template_Update(dbset.dbinit(), temp);
 	}
-*/
+
 	
 
 	private void clipInsertCallback(Clip clip, final String query, final String id) {
