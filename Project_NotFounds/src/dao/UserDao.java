@@ -41,10 +41,11 @@ public class UserDao {
 		return dbset.getList(strbuild.toString());
 	}
 
+	// ID 가 잇으면 TRUE 없으면 False
 	public boolean user_check(String email) {
 		StringBuilder strbuild = new StringBuilder("select * from user where email =");
 		strbuild.append("'").append(email).append("'");
-		return dbset.getList(strbuild.toString()).size()==0?true:false;
+		return dbset.getList(strbuild.toString()).size()==0?false:true;
 	}
 
 	private void insert(final String query, final User user) {
@@ -77,7 +78,7 @@ public class UserDao {
 	public void jsback(HttpServletResponse response) throws IOException {
 		PrintWriter out = response.getWriter();
 		out.println("<script>");
-		out.println("alert('what ? nope!');");
+		out.println("alert('ID or Password incorrect');");
 		out.println("history.back();");
 		out.println("</script>");
 

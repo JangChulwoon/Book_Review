@@ -116,7 +116,9 @@ public class ClipDao {
 	}
 
 	public List<Map<String, String>> selectList(final String id) {
-		StringBuilder str = new StringBuilder("SELECT * FROM clip where id = ").append("\'").append(id).append("\'");
+		// builder로 하기엔 코드가 너무 난잡한데 ..? 
+		StringBuilder str = new StringBuilder("SELECT * FROM clip where id = ").append("\'")
+				.append(id).append("\'").append(" order by date desc;");
 		return dbset.getList(str.toString());
 	}
 

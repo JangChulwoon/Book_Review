@@ -48,6 +48,7 @@ public class MainController extends HttpServlet {
 		ClipDao dao = new ClipDao();
 		String id = (String)session.getAttribute("id");
 		List<Map<String, String>> list = dao.selectList(id);
+
 		request.setAttribute("clip", list);
 		logger.info(list.toString());
 		Dispatcher(request, response, "/view/mainPage.jsp");

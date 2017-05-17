@@ -340,6 +340,13 @@
 	
 	$(function(){
 		
+		$("#enroll_book").on("click",function(){
+			$("#book-form > input[name=action]").attr("value","record");
+			$("#book_title").val(" ");
+			$("#enroll_state option").prop("selected", false);
+			$('#enroll_state option[value=default]').attr('selected', 'selected');
+		});
+		
 		// book 수정
 		$(".edit").on("click",function(){
 			var tr= $(this).closest('tr');
@@ -347,9 +354,9 @@
 			var state = $(this).closest('tr').children().eq(1).text();
 			$("#book-form > input[name=action]").attr("value","update");
 			$("#book_title").val($(this).closest('tr').children().eq(0).text());
+			$("#enroll_state option").prop("selected", false);
 			$('#enroll_state option[value='+state+']').attr('selected', 'selected');
 			$("#book-form > input[name=index]").attr("value",index);
-			
 		});
 	
 		 
@@ -423,12 +430,10 @@
 	    // 해당 form 에 추가함 . 
 	    $( "#book_title" ).autocomplete( "option", "appendTo", "#book-form" );
 	    $("#record").on("click",function(){
-	    	$('#book-form').submit();
-	    	
+	    	$('#book-form').submit();	
 	    });
 	    
 	    // ajax를 통해 insert .
-	    
 	    $("#memo-record").on("click",function(){
 	    	$("input[name=action]").attr("value","insert");
 	    	var formData = $("#memo-form").serialize();

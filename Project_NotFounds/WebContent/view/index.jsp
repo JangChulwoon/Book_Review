@@ -85,10 +85,10 @@
 							<br>
 							<ul class="list-inline intro-social-buttons">
 								<li>
-									<a onclick="submit()" class="btn btn-default btn-lg box_size" >
+									<button onclick="submit()" type  ="submit" class="btn btn-default btn-lg box_size" >
 										<i class="fa fa-play fa-fw"></i> 
 										<span class="network-name">Login</span>
-									</a>
+									</button>
 									<a class="btn btn-default btn-lg box_size" data-target="#layerpop" data-toggle="modal">
 											<i class="fa fa-cog fa-fw"></i> 
 											<span class="network-name">Join</span>
@@ -327,7 +327,11 @@
 	<script src="/NotFound/resources/js/bootstrap.min.js"></script>
 
 <script>
+
+
 	$().ready(function(){
+		
+		
 		var idcheck = 0;
 		var passcheck= 0;
 		var checkAjaxSetTimeout;

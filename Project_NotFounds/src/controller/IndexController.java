@@ -69,16 +69,19 @@ public class IndexController extends HttpServlet {
 			// login ..
 			String email = request.getParameter("userid");
 			String pass = request.getParameter("userpd");
-			list = userdao.user_login(email);
-			boolean passcheck =  BCrypt.checkpw(pass,list.get(0).get("pass"));
-			
-			if (list.size() != 0 && passcheck) {
-				input_Session(request, email, list.get(0).get("name"));
-				log.info("login info" + list.get(0));
-				response.sendRedirect("/NotFound/main.do");
-			} else {
-				userdao.jsback(response);
+			// 아이디가 잇는지 확인. 
+			if(userdao.user_check(email)){
+				list = userdao.user_login(email);
+				boolean passcheck =  BCrypt.checkpw(pass,list.get(0).get("pass"));
+				
+				if (list.size() != 0 && passcheck) {
+					input_Session(request, email, list.get(0).get("name"));
+					log.info("login info" + list.get(0));
+					response.sendRedirect("/NotFound/main.do");
+				}
 			}
+			//위 조건들에서 걸러지고 .. 안걸러지면 back 
+			userdao.jsback(response);
 		}  else {
 			userdao.jsback(response);
 		}
